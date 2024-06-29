@@ -1,0 +1,448 @@
+{% load static %}
+
+<!---- -- -- -- -- -- -- --  header -- -- -- -- -- -- -- -- -->
+
+<section class="header">
+    <div class="container_navbar">
+        <div class="img_logo_barand">
+            <h1>
+                <img title="Renovative_Design" alt="Renovative Design"
+                     id="img_logo"
+                     src={% static 'home/media/header/logo1.png' %}
+                />
+            </h1>
+
+            <a id="title_logo" href="#">Renovative Design</a>
+        </div>
+        <div class="nav_items">
+            <a href="{% url 'products:products' %}">Buy Accessories</a>
+            <a href="{% url 'home:all_products' %}">Category</a>
+
+
+
+            {% if not request.user.is_authenticated %}
+                <a href={% url 'accounts:login' %}>
+                    <i id="logo_profile" class="bx bx-user"></i>
+                    <span>Login/Register</span>
+
+
+                    {% else %}
+                    <span id="logo_profile_span"><i id="logo_profile" class="bx bx-user"></i>Hi
+                        {% if request.user.f_name %}
+                            {{ request.user.f_name }}
+                        {% else %}
+                            {{ request.user.phone_number }}
+                        {% endif %}
+                    </span>
+                </a>
+
+            {% endif %}
+        </div>
+    </div>
+</section>
+
+<!---- -- -- -- -- -- -- --  End_of_header -- -- -- -- -- -- -- -- -->
+<!---- -- -- -- -- -- -- --  main-top-part -- -- -- -- -- -- -- -- -->
+
+<section class="main-top-part">
+    <div class="container" id="main-backgraound">
+        <div id="main_title">
+            <p>
+                <span>Renovative Design:</span>
+                <span id="titre_sub_main_content"></span>
+                <span id="marker_type_animation"></span>
+{#                AI-Based Architectural Design Platform#}
+            </p>
+        </div>
+        <div id="main_top_part_content">
+            <p>
+                We use Artificial Intelligence to generate floor plans optimized for
+                <span id="bold"
+                >form, function and compliance with local regulations</span
+                >
+            </p>
+        </div>
+
+
+        <div id="start_free">
+
+
+            {% if not request.user.is_authenticated %}
+
+                <button class="btn" type="submit">
+                    <a href="{% url 'accounts:login' %}">Start for free</a>
+                </button>
+            {% endif %}
+
+
+            <div id="demo">
+                <img alt="watch_demo_icon" title="watch_demo_icon"
+                     src={% static 'home/media/main-part/download.png' %}/>
+                <p class="watch_demo_p">Watch Demo!!</p>
+            </div>
+        </div>
+    </div>
+</section>
+<!---- -- -- -- -- -- -- --  End_main-top-part -- -- -- -- -- -- -- -- -->
+<!---- -- -- -- -- -- -- --  problem_section -- -- -- -- -- -- -- -- -->
+
+<div class="container_problem_section" id="problem">
+    <h3 id="title_section">Current Problem</h3>
+    <div class="problem_cart_btn">
+        <i class="bx bx-chevron-left" id="left_btn"></i>
+
+        <div class="problems_cart">
+            <div class="problem_cart_content">
+                Building a custom home, addition, or major renovation involves
+                multiple stages and can be complex.
+            </div>
+            <div class="problem_cart_img">
+                <p>complicated</p>
+                <img alt="complicated" src={% static 'home/media/main-part/complicated.png' %}/>
+            </div>
+        </div>
+
+        <div class="problems_cart hide">
+            <div class="problem_cart_content">
+                One of the most crucial elements of this process is floor plan
+                design, which requires balancing multiple factors such as form,
+                function, construction time, cost, and compliance with municipal
+                regulations.
+            </div>
+            <div class="problem_cart_img">
+                <p>Time consuming</p>
+                <img alt="time_consuming" src={% static 'home/media/main-part/time.png' %}/>
+            </div>
+        </div>
+
+        <div class="problems_cart hide">
+            <div class="problem_cart_content">
+                For architects the optimization of their design for form, function
+                and compliance with municipal rules and regulations
+            </div>
+            <div class="problem_cart_img">
+                <p>rules</p>
+                <img alt="rules" src={% static 'home/media/main-part/regular.png' %}/>
+            </div>
+        </div>
+
+        <i class="bx bx-chevron-right" id="right_btn"></i>
+    </div>
+</div>
+<!---- -- -- -- -- -- -- --  End_problem_section -- -- -- -- -- -- -- -- -->
+<!---- -- -- -- -- -- -- --  Solution_section -- -- -- -- -- -- -- -- -->
+<div class="container_solution_section">
+    <h2 id="title_section">The Solution</h2>
+    <div class="container_pc_video">
+        <div id="solution_video">
+            <img id="os" alt="os" src={% static 'home/media/solution/os.png' %}/>
+            <video id="x" controls
+                   src={% static 'home/media/solution/article-demo-3.mp4' %}>
+            </video>
+
+        </div>
+    </div>
+</div>
+
+
+<!---- -- -- -- -- -- -- --End_Solution_section -- -- -- -- -- -- -- -- -->
+<!---- -- -- -- -- -- -- --approach_section -- -- -- -- -- -- -- -- -->
+<div class=" container_approach_section" id="start_project">
+    <div id="main_title">
+        <p>
+            Start a Project <br/>
+            with <span>Renovative Design</span>
+        </p>
+    </div>
+
+    <div class="container_card_solution">
+        <div id="card-upload-plan-text">
+            <span id="import-export">Import & export</span><br/>Start from the
+            begining.Import and export your work, whatever your format!
+            <br/>
+            <span id="plus">+</span> DWG <br/>
+            <span id="plus">+</span> DXF <br/>
+            <span id="plus">+</span> PDF <br/>
+            <span id="plus">+</span> Image <br/>
+        </div>
+        <div class="ordered" id="card-upload-plan-video">
+            <video controls
+                   src={% static 'home/media/approach/gift1-upload plan-1.mp4' %}
+            ></video>
+        </div>
+    </div>
+
+    <div class="container_card_solution ordered_direction">
+        <div class="ordered" id="card-upload-plan-video">
+            <video controls
+                   src={% static "home/media/approach/gift1-customize-1.mp4" %}
+            ></video>
+        </div>
+        <div id="card-upload-plan-text">
+            <p>
+                <span id="import-export">Customization</span> <br/>Select
+                Qualitative Parameters
+            </p>
+            <div>
+                <ul>
+                    <li>Room Counts</li>
+                    <li>Room Size</li>
+                    <li>Adjacency</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="container_card_solution">
+        <div id="card-upload-plan-text">
+            <p>
+                <span id="import-export">Check Plan with NBC Canada</span> Start
+                from the beginning: import and export your works, whatever your
+                format!!
+            </p>
+        </div>
+        <div class="ordered" id="card-upload-plan-video">
+            <video controls
+                   src={% static "home/media/approach/gift1-check NBC Canada-1.mp4" %}
+            ></video>
+        </div>
+    </div>
+</div>
+
+<!-------------------------- Team_section/start ------------------------------------>
+<div class="container_team margin">
+    <div class="content_team_left">
+        <div class="img_team_content">
+            <img alt="img_team_content"
+                 src={% static "home/media/team/new/leily_parizadeh.jpg" %}
+            />
+            <p id="team_member">
+                CEO <br/>
+                Leily Parizadeh
+            </p>
+        </div>
+        <div class="img_team_content">
+            <img alt="img_team_content" src={% static "home/media/team/new/milad_amiri.jpg" %}/>
+            <p id="team_member">
+                CTO(Software Developer) <br/>
+                Milad Amiri Dastenaee
+            </p>
+        </div>
+        <div class="img_team_content">
+            <img alt="img_team_content"
+                 src={% static "home/media/team/new/maliheh gholami.jpg" %}
+
+            />
+            <p id="team_member">
+                COO <br/>
+                Maliheh Gholami
+            </p>
+        </div>
+        <div class="img_team_content">
+            <img alt="img_team_content" src={% static "home/media/team/new/reza_hejazi.jpg" %}/>
+            <p id="team_member">
+                Business Developer <br/>
+                Reza Hejazi
+            </p>
+        </div>
+        <div class="img_team_content">
+            <img alt="img_team_content" src={% static  "home/media/team/new/koorosh.jpg" %}/>
+            <p id="team_member">
+                Project Manager <br/>
+                Koorosh Shakourzadeh
+            </p>
+        </div>
+
+
+    </div>
+
+    <div id="about_us_link" class="content_team_right">
+        <h2>ABOUT US</h2>
+        <p id="team_content_h3">
+            Renovative Design is an artificial intelligence-based architectural
+            platform. Its main objective is to provide an effective and reliable
+            platform that aids Canadian businesses and architects in improving the
+            process of building design and construction, resulting in greater
+            productivity and decreased costs. This platform helps architects,
+            engineers, and other construction industry professionals improve both
+            their projects and their processes by utilizing cutting-edge
+            technologies and data-driven architectural models. They automate the
+            generation of plans and assure compliance to Canadian-specific
+            building regulations and codes by utilizing artificial intelligence.
+            This framework is specifically designed for architectural firms across
+            Canada and aims to expand these regulations and standards for other
+            countries in the future.
+        </p>
+    </div>
+</div>
+<!-------------------------- End_Team_section/End -------------------------------------->
+
+<!-------------------------- Footer_section -------------------------------------->
+
+<section>
+    <div class="back_graound">
+        <div class="content_footer">
+            <h3>Address</h3>
+            <br/>
+            <p>
+                <i id="pad_white" class="fa-solid fa-location-dot"></i>123 Street,
+                New York, USA
+            </p>
+            <p><i id="pad_white" class="fa-solid fa-phone"></i>+012 345 67890</p>
+            <p>
+                <i id="pad_white" class="fa-solid fa-envelope"></i>info@example.com
+            </p>
+            <div id="social_media_to_contact">
+                <i id="logo_border" class="fa-brands fa-instagram"></i>
+                <i id="logo_border" class="fa-brands fa-linkedin"></i>
+                <i id="logo_border" class="fa-brands fa-youtube"></i>
+                <i id="logo_border" class="fa-brands fa-twitter"></i>
+            </div>
+        </div>
+        <div class="content_footer">
+            <h3>Services</h3>
+            <br/>
+            <a href="{% url 'products:products' %}"
+            ><i id="pad_white" class="fa-solid fa-caret-right"></i>Buy Accessories</a
+            >
+            <a href=" {% url 'home:all_products' %}"
+            ><i id="pad_white" class="fa-solid fa-caret-right"></i>Category</a
+            >
+            <a href="#"
+            ><i id="pad_white" class="fa-solid fa-caret-right"></i>Blogs</a
+            >
+            <a href="#"
+            ><i id="pad_white" class="fa-solid fa-caret-right"></i>Services</a
+            >
+        </div>
+        <div class="content_footer">
+            <h3>Quick Links</h3>
+            <br/>
+            <a href="#about_us_link"
+            ><i id="pad_white" class="fa-solid fa-caret-right"></i>About Us</a
+            >
+            <p class="contact_us_share"
+            ><i id="pad_white" class="fa-solid fa-caret-right "></i>Contact Us</p
+            >
+            <a href="#"
+            ><i id="pad_white" class="fa-solid fa-caret-right"></i>Our
+                Services</a
+            >
+
+        </div>
+
+        <div class="content_footer">
+            <h3>Newsletter</h3>
+            <br/>
+            <p>You can try free for once!!</p>
+            <br/>
+
+            <div class="input_search">
+                <input id="input_search_email" type="email" placeholder="Your Email">
+                <span id="blue_btn">Sign Up</span>
+            </div>
+        </div>
+    </div>
+</section>
+<!-------------------------- End_Footer_section -------------------------------------->
+
+
+<section id="modal_section_profile" class="modal_section_detail hide">
+    <div class="left_modal_section_profile"></div>
+    <div id="modal">
+        <div class="title_modal_close_user_log">
+
+            {% if request.user.is_authenticated %}
+                <h4>Hi :
+                    {% if request.user.f_name %}
+                        {{ request.user.f_name }}
+                    {% else %}
+                        {{ request.user.phone_number }}
+                    {% endif %}
+                </h4>
+                <a href={% url 'accounts:logout' %}><span id="btn_log_out"><i id="logo_profile" class="bx bx-user"></i>Log Out</span></a>
+            {% endif %}
+
+
+        </div>
+        <div class="title_modal_heart_cart">
+            <a href="{% url 'products:liked_user_products' %}"><i class="fa-regular fa-heart"></i></a>
+            <div class="cart_counter">
+                <a href="{% url 'cart:cart' %}"><i id="order_icon" class="fa-solid fa-cart-plus"></i></a>
+                <span id="counter_order">{{ cart_len }}</span>
+            </div>
+        </div>
+        <hr>
+        <div class="title_modal_close">
+            <h4>Options</h4>
+
+            <a href="{% url 'products:liked_user_products' %}"> Liked list </a>
+            <a href="{% url 'accounts:profile' %}"> Manage account </a>
+
+        </div>
+    </div>
+</section>
+
+
+{#Create Modal for watch demo#}
+<div class="container_modal_demo hide">
+    <div id="close_watch_demo_modal">
+        <i id="close_btn_watch_demo" class='bx bx-x'></i>
+    </div>
+    <video id="watch_demo_modal" controls
+           src={% static 'home/media/solution/article-demo-3.mp4' %}>
+    </video>
+</div>
+
+
+<!-- -- -- -- -- -- -- -- -- -- modal_menu_share  -- -- -- -- -- -- -- -- -- ---->
+
+<div class="btn_share_modal_coppyeid hide">
+    The link has been copied
+    <i id="close_icon_btn_share_modal_coppyeid" class="bx bx-x"></i>
+</div>
+
+<div class="container_menu_modal_sahare hide">
+    <div class="menu_right_modal_share">
+        <div class="close_icon_modal_share">
+            <i id="close_icon_modal_share" class="bx bx-x"></i>
+            <div class="modal_share_img_text">
+                <img alt=""
+                     id="img_modal_share"
+                     src={% static "home/media/header/logo1.png" %}
+
+                />
+                <div class="text_content_modal_share">
+                    <h3>Renovative Design: AI-Based Architectural Design Platform</h3>
+
+
+                    <p>
+                        We use Artificial Intelligence to generate floor plans optimized for
+                        form, function and compliance with local regulations
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="menu_list_main_modal_share">
+            <a href="" id="menu_list_main_modal_share"
+            ><i class="bx bxl-pinterest"></i>Pinterest</a
+            >
+            <a href="" id="menu_list_main_modal_share"
+            ><i class="bx bxl-facebook-square"></i> Facebook</a
+            >
+            <a href="" id="menu_list_main_modal_share"
+            ><i class="fa-brands fa-x-twitter"></i> Twitter</a
+            >
+            <a href="" id="menu_list_main_modal_share"
+            ><i class='bx bxl-linkedin'></i> Linedin</a
+            >
+
+
+        </div>
+    </div>
+    <div class="bac_menu_right_modal_share"></div>
+</div>
+<!-- -- -- -- -- -- -- -- -- -- End_modal_menu_share -- -- -- -- -- -- -- -- -- ---->
+
+<a href="" class="to_top_page hide_btn_">
+    <i class="fa fa-chevron-up"></i>
+</a>

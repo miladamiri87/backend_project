@@ -1,0 +1,850 @@
+{% load static %}
+{% load humanize %}
+{% load product_filter_tag %}
+
+
+<!-- -- -- -- -- -- -- -- -- -- header  -- -- -- -- -- -- -- -- -- -- -->
+
+<section class="container_nav_ber">
+    <div id="logo_search">
+        <div class="menu">
+            <i id="menu_icon" class="bx bx-menu"></i>
+            <p>Menu</p>
+        </div>
+    </div>
+
+    <div id="like_cart_heart">
+        <div class="logIn">
+
+            {% if not request.user.is_authenticated %}
+                <a href={% url 'accounts:login' %}>
+                    <i id="logo_profile" class="bx bx-user"></i>
+                    <span>Login/Register</span>
+
+
+                    {% else %}
+                    <span id="logo_profile_span"><i id="logo_profile" class="bx bx-user"></i>Hi
+                        {% if request.user.f_name %}
+                            {{ request.user.f_name }}
+                        {% else %}
+                            {{ request.user.phone_number }}
+                        {% endif %}
+                    </span>
+                </a>
+
+            {% endif %}
+        </div>
+
+        <a href="{% url 'products:liked_user_products' %}"><i class="fa-regular fa-heart"></i></a>
+        <div class="cart_counter">
+            <a href="{% url 'cart:cart' %}"><i id="order_icon" class="fa-solid fa-cart-plus"></i></a>
+            <span id="counter_order" class="hide"></span>
+        </div>
+    </div>
+</section>
+<div id="message" class="btn_share_modal_coppyeid hide">
+</div>
+<!-- -- -- -- -- -- -- -- -- -- End_header  -- -- -- -- -- -- -- -- -- -- -->
+<!------------------------------ content_detail ------------------------------------------>
+
+<section class="content_detail">
+    <div id="content_left">
+
+        <div class="content_image_details">
+            {% for p in product.products_extra_image.all %}
+                <img id="img_card_details"
+                        {% if p.image %}
+                     src="{{ p.image.url }}"
+                        {% endif %}
+                     alt="pic_detail_01"
+                />
+            {% endfor %}
+        </div>
+        <p id="detail_content_gray">
+            {{ product.desc }}
+        </p>
+
+        <hr/>
+        <div class="detaile_atributes">
+            <div>
+                <a id="detail_a_atribute"> Product details </a>
+            </div>
+            <div>
+                <a id="detail_a_arrow"
+                ><i id="product_details" class="fa-solid fa-arrow-right"></i
+                ></a>
+            </div>
+        </div>
+
+        <hr/>
+
+        <div class="detaile_atributes">
+            <div>
+                <a id="detail_a_atribute"> Measurements</a>
+            </div>
+            <div>
+                <a id="detail_a_arrow"
+                ><i id="measurements" class="fa-solid fa-arrow-right"></i
+                ></a>
+            </div>
+        </div>
+
+        <hr/>
+        <div class="detaile_atributes">
+            <div>
+                <a id="detail_a_atribute"> Comments</a>
+            </div>
+            <div>
+                <a id="detail_a_arrow"
+                ><i id="comments_btn" class="fa-solid fa-arrow-right"></i
+                ></a>
+            </div>
+        </div>
+        <hr/>
+
+
+    </div>
+
+
+    <div id="content_right">
+        <div id="detail_primary_detaial">
+            <div>
+                <h5 id="title">{{ product.name }}</h5>
+                <h6 id="title">{{ product.tag.first }}</h6>
+            </div>
+            <div id="details_heart_cart">
+                <div class="like_container">
+
+                        <span><i id="like_count_product" class="{{ like_class }} fa-heart"
+                                 onclick="product_like(
+                                         {{ product.id }},
+                                         '{% url 'products:product_like_ajax' %}',
+                                         '{% url 'accounts:login' %}?next={% url 'products:product_details' product.id product.slug %}'
+                                         )"
+                        ></i></span>
+
+
+                    <span> (<span id="like_count">{{ product.likers_count }}</span>)</span>
+                </div>
+
+            </div>
+        </div>
+
+        <div id="price">
+            <span>$</span>
+            {% if product.status == 'none' %}
+                <span>{{ product.final_price|intcomma }}</span>
+            {% else %}
+                <span>{{ selected_var.final_price|intcomma }}</span>
+            {% endif %}
+            {% if pr_discount_price %}
+                {% if product.status == 'none' %}
+                    {% if pr_discount_price > product.final_price %}
+                        <span class="price_details_discount">${{ pr_discount_price|intcomma }}</span>
+                    {% endif %}
+
+                {% else %}
+                    {% if pr_discount_price > selected_var.final_price %}
+                        <span class="price_details_discount">${{ pr_discount_price|intcomma }}</span>
+                    {% endif %}
+                {% endif %}
+
+
+
+            {% endif %}
+
+            {#//////////////////////////////////////////////////////////////////////////////////////////////////////////////#}
+        </div>
+
+
+        {#//////////////////////////////////////////////////////////////color variant#}
+
+
+
+        {% if product.status == 'color' %}
+            <div class="variant_image">
+                <div class="choose_color_arrow">
+                    <h5 id="modal_variant_color">Choose color</h5>
+                    <i id="btn_choose_color" class="fa-solid fa-chevron-right"></i>
+                </div>
+                <hr>
+                <p id="name_variant_color">{{ selected_var.color.name }}</p>
+                <div>
+                    <form>
+
+                        {% for p in product.product_vars.all %}
+
+                            <button id="btn_variant_color" name="user_var" value="{{ p.id }}"
+                                    onclick="this.form.submit()"
+                                    {% if p.stock == 0 %}disabled{% endif %}
+                                    {% if p.id == selected_var.id %}class = 'select'{% endif %}
+                            >
+                                <img alt="variants" src=" {{ p.color.image_variant.url }}">
+
+                            </button>
+                        {% endfor %}
+                    </form>
+                </div>
+            </div>
+        {% endif %}
+
+        {#//////////////////////////////////////////////////////////////size variant#}
+        {% if product.status == 'size' %}
+            <div class="variant_image">
+                <div class="choose_color_arrow">
+                    <h5 id="modal_variant_color">Choose size</h5>
+                    <i id="btn_choose_color" class="fa-solid fa-chevron-right"></i>
+                </div>
+                <hr>
+                <p id="name_variant_color">{{ selected_var.dimension.dimension }}</p>
+                <div>
+                    {#<img class="select" alt="" src="{{ selected_var.color.image_variant.url }}">#}
+                    <form>
+
+                        {% for p in product.product_vars.all %}
+
+                            <button id="btn_variant_color" name="user_var" value="{{ p.id }}"
+                                    onclick="this.form.submit()"
+                                    {% if p.stock == 0 %}disabled{% endif %}
+                                    {% if p.id == selected_var.id %}class = 'select'{% endif %}
+                            >
+                                <div id="size_varient_container">{{ p.dimension.dimension }}</div>
+
+                            </button>
+                        {% endfor %}
+                    </form>
+                </div>
+            </div>
+        {% endif %}
+
+        {#//////////////////////////////////////////////////////////////size_color variant#}
+        {% if product.status == 'size_color' %}
+            <div class="variant_image">
+                <div class="choose_color_arrow">
+                    <h5 id="modal_variant_color">Choose size</h5>
+                    <i id="btn_choose_color" class="fa-solid fa-chevron-right"></i>
+                </div>
+                <hr>
+                <p id="name_variant_color">{{ selected_var.dimension.dimension }}</p>
+                <div>
+                    <form>
+
+                        {% for p in product.product_vars.all %}
+
+                            <button id="btn_variant_color" name="user_var" value="{{ p.id }}"
+                                    onclick="this.form.submit()"
+                                    {% if p.stock == 0 %}disabled{% endif %}
+                                    {% if p.id == selected_var.id %}class = 'select'{% endif %}
+                            >
+                                <div id="size_varient_container">{{ p.dimension.dimension }}</div>
+
+                            </button>
+                        {% endfor %}
+                    </form>
+                </div>
+                <div>
+                    <form>
+
+                        {% for p in product.product_vars.all %}
+
+                            <button id="btn_variant_color" name="user_var" value="{{ p.id }}"
+                                    onclick="this.form.submit()"
+                                    {% if p.stock == 0 %}disabled{% endif %}
+                                    {% if p.id == selected_var.id %}class = 'select'{% endif %}
+                            >
+                                <img alt="variants" src=" {{ p.color.image_variant.url }}">
+
+                            </button>
+                        {% endfor %}
+                    </form>
+                </div>
+
+            </div>
+        {% endif %}
+
+
+
+
+
+        <div class="cart_counter">
+
+            {% if product.status == 'none' %}
+                <input id="number_order" min="1" type="number">
+                <input id="add_to_cart" type="submit" value="Add to Cart"
+                       onclick="add_to_cart(
+                               {{ product.id }},
+                               '{% url 'cart:add_to_cart' %}',
+                               '{% url 'accounts:login' %}?next={% url 'products:product_details' product.id product.slug %}'
+                               )"
+                >
+
+            {% else %}
+
+                <input id="number_order" min="1" type="number">
+                <input id="add_to_cart" type="submit" value="Add to Cart"
+                       onclick="add_varient_to_cart(
+                               {{ product.id }},
+                               '{% url 'cart:add_to_var_cart' %}',
+                               '{% url 'accounts:login' %}?next={% url 'products:product_details' product.id product.slug %}'
+                               )">
+            {% endif %}
+
+
+        </div>
+
+        <div id="star">
+            <span><i class="fa-solid fa-star"></i></span>
+            <span><i class="fa-solid fa-star"></i></span>
+            <span><i class="fa-solid fa-star"></i></span>
+            <span><i class="fa-solid fa-star"></i></span>
+            <span><i class="fa-solid fa-star"></i></span>
+            <span id="rate">({{ total_seen }})</span>
+        </div>
+        <hr>
+
+
+        <div>
+            <canvas id="myChart"></canvas>
+        </div>
+
+    </div>
+</section>
+
+
+<h2 id="detail_related_product">Related products</h2>
+
+<div class="container_card_scroll">
+
+    {% for p in all_products %}
+        {% if p.tag.first == product.tag.first and p.id != product.id and p.tag.first != none %}
+
+            <a href="{{ p.get_absolute_url }}">
+                <div class="card_scroll">
+                    <div class="img_card_scroll">
+                        <div id="0">
+                            <img alt="" class="img_up_for_hover" id="up"
+                                 src='{{ p.image.url }}'
+                            />
+                        </div>
+                        <div class="hide_hover_scroll_bar" id="1">
+                            <img id="buttom"
+                                 class="img_bottum_for_hover"
+                                 alt=""
+                                 src='{{ p.image_hover.url }}'
+
+                            />
+                        </div>
+                    </div>
+
+                    <div class="price_details">
+                        <h5>{{ p.name }}</h5>
+                        <h6>{{ p.tag.first }}</h6>
+                        <h5>${{ p.unit_price }}</h5>
+                    </div>
+                </div>
+            </a>
+
+
+        {% endif %}
+
+    {% endfor %}
+</div>
+
+
+<!-- footer -->
+
+<section>
+    <div class="back_graound">
+        <div class="content_footer">
+            <h3>Address</h3>
+            <br/>
+            <p>
+                <i id="pad_white" class="fa-solid fa-location-dot"></i>123 Street,
+                New York, USA
+            </p>
+            <p><i id="pad_white" class="fa-solid fa-phone"></i>+012 345 67890</p>
+            <p>
+                <i id="pad_white" class="fa-solid fa-envelope"></i>info@example.com
+            </p>
+            <div>
+                <i id="logo_border" class="fa-brands fa-instagram"></i>
+                <i id="logo_border" class="fa-brands fa-linkedin"></i>
+                <i id="logo_border" class="fa-brands fa-youtube"></i>
+                <i id="logo_border" class="fa-brands fa-twitter"></i>
+            </div>
+        </div>
+        <div class="content_footer">
+            <h3>Services</h3>
+            <br/>
+            <a href="#"
+            ><i id="pad_white" class="fa-solid fa-caret-right"></i>Cardialogy</a
+            >
+            <a href="#"
+            ><i id="pad_white" class="fa-solid fa-caret-right"></i>Pulmonary</a
+            >
+            <a href="#"
+            ><i id="pad_white" class="fa-solid fa-caret-right"></i>Neurology</a
+            >
+            <a href="#"
+            ><i id="pad_white" class="fa-solid fa-caret-right"></i>orthopedi</a
+            >
+            <a href="#"
+            ><i id="pad_white" class="fa-solid fa-caret-right"></i>Laboratory</a
+            >
+        </div>
+        <div class="content_footer">
+            <h3>Quick Links</h3>
+            <br/>
+            <a href="#"
+            ><i id="pad_white" class="fa-solid fa-caret-right"></i>About Us</a
+            >
+            <a href="#"
+            ><i id="pad_white" class="fa-solid fa-caret-right"></i>Contact Us</a
+            >
+            <a href="#"
+            ><i id="pad_white" class="fa-solid fa-caret-right"></i>Our
+                Services</a
+            >
+            <a href="#"
+            ><i id="pad_white" class="fa-solid fa-caret-right"></i>Terms and
+                cindition</a
+            >
+            <a href="#"
+            ><i id="pad_white" class="fa-solid fa-caret-right"></i>Support</a
+            >
+        </div>
+
+        <div class="content_footer">
+            <h3>Newsletter</h3>
+            <br/>
+            <p>Dolor amet sit justo amet elitr clita ipsum elitr est.</p>
+            <br/>
+
+            <div class="input_search">
+                <input
+                        id="input_search_email"
+                        type="email"
+                        placeholder="Your Email"
+                /><span id="blue_btn">Sign Up</span>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- --------------------------modals --------------------------------->
+<!-- -- -- -- -- -- -- -- -- -- modal_menu  -- -- -- -- -- -- -- -- -- ---->
+
+<div class="container_menu_modal hide">
+    <div class="menu_left">
+        <div class="close_logo">
+            <i id="close_icon" class="bx bx-x"></i>
+            <p id="close_icon">Renovative Design</p>
+        </div>
+        <div class="menu_list_main">
+            <a href="{% url 'home:home' %}" id="menu_list_main">Home</a>
+            <a href="{% url 'products:products' %}" id="menu_list_main"> Product</a>
+            <a href="{% url 'accounts:login' %}" id="menu_list_main"> Register</a>
+            <a href="{% url 'cart:cart' %}" id="menu_list_main"> Order</a>
+        </div>
+
+        <div class="menu_list">
+            {% for c in category %}
+                {% if c.name == 'Storage & organisation' %}
+                    <a href="{% url 'products:c_products' c.id c.slug %}" id="menu_list">Storage &
+                        organisation</a>
+                {% endif %}
+            {% endfor %}
+
+            {% for c in category %}
+                {% if c.name == 'Furniture' %}
+                    <a href="{% url 'products:c_products' c.id c.slug %}" id="menu_list"> Furniture</a>
+                {% endif %}
+            {% endfor %}
+
+
+            {% for c in category %}
+                {% if c.name == 'Textiles' %}
+                    <a href="{% url 'products:c_products' c.id c.slug %}" id="menu_list"> Textiles</a>
+                {% endif %}
+            {% endfor %}
+
+            {% for c in category %}
+                {% if c.name == 'Accessories' %}
+                    <a href="{% url 'products:c_products' c.id c.slug %}" id="menu_list"> Accessories</a>
+                {% endif %}
+            {% endfor %}
+            {% for c in category %}
+                {% if c.name == 'Lighting' %}
+                    <a href="{% url 'products:c_products' c.id c.slug %}" id="menu_list"> Lighting</a>
+                {% endif %}
+            {% endfor %}
+            {% for c in category %}
+                {% if c.name == 'Kitchenware & tableware' %}
+                    <a href="{% url 'products:c_products' c.id c.slug %}" id="menu_list"> Kitchenware & tableware</a>
+                {% endif %}
+            {% endfor %}
+            {% for c in category %}
+                {% if c.name == 'Bathroom products' %}
+                    <a href="{% url 'products:c_products' c.id c.slug %}" id="menu_list"> Bathroom products</a>
+                {% endif %}
+            {% endfor %}
+            {% for c in category %}
+                {% if c.name == 'Outdoor products' %}
+                    <a href="{% url 'products:c_products' c.id c.slug %}" id="menu_list"> Outdoor products</a>
+                {% endif %}
+            {% endfor %}
+        </div>
+    </div>
+    <div class="bac_menu_right"></div>
+</div>
+<!-- -- -- -- -- -- -- -- -- -- End_modal_menu  -- -- -- -- -- -- -- -- -- ---->
+
+
+<!-- product detail -->
+<section id="modal_section_detail" class="modal_section_detail hide">
+    <div class="left_modal_section"></div>
+    <div id="modal">
+        <div class="title_modal_close">
+            <h3>Product details</h3>
+            <i id="close_icon_modal" class="bx bx-x"></i>
+        </div>
+        <h5>Brand</h5>
+        <p id="brand_info">{{ product.products_details_info.first.description_designer }}</p>
+
+        {% if product.products_details_info.first.material or product.products_details_info.first.care %}
+            <h4>Details: Materials & care</h4>
+            <hr/>
+            <div>
+                {% if product.products_details_info.first.material %}
+                    <h5>Material</h5>
+                    <p>{{ product.products_details_info.first.material }}</p>
+                {% endif %}
+                {% if product.products_details_info.first.care %}
+                    <h5>Care</h5>
+                    <p>
+                        {{ product.products_details_info.first.care }}
+                    </p>
+                {% endif %}
+            </div>
+        {% endif %}
+
+
+        {% if product.products_details_info.first.goodToKnow %}
+            <div>
+                <h4>Good to Know</h4>
+                <hr/>
+                <p>
+                    {{ product.products_details_info.first.goodToKnow }}
+                </p>
+            </div>
+        {% endif %}
+
+
+        {% if product.products_details_info.first.safety_compliance %}
+            <div>
+                <h4>Safety & compliance</h4>
+                <hr/>
+                <p>
+                    {{ product.products_details_info.first.safety_compliance }}
+                </p>
+            </div>
+        {% endif %}
+
+    </div>
+</section>
+
+<!-- Measurements -->
+<section id="modal_section_measurements" class="modal_section_detail hide">
+    <div class="left_modal_section_measurements"></div>
+    <div id="modal">
+        <div class="title_modal_close">
+            <h2>Measurements</h2>
+            <i id="close_icon_modal_measurements" class="bx bx-x"></i>
+        </div>
+        <div>
+            {% if product.size_length %}
+                <p>Length : {{ product.size_length }}</p>
+            {% endif %}
+            {% if product.size_width %}
+                <p>Width : {{ product.size_width }}</p>
+            {% endif %}
+            {% if product.size_height %}
+                <p>Height : {{ product.size_height }}</p>
+            {% endif %}
+        </div>
+
+
+        <hr/>
+        <img
+                src="{{ product.image.url }}"
+                alt=""
+        />
+        <hr/>
+
+        <div class="packaging">
+            <h4>Packaging</h4>
+            <div class="btn_pac">
+                <i id="btn_packaging_down" class="bx bx-chevron-down"></i>
+            </div>
+        </div>
+        <hr/>
+
+        <div class="packaging_content hide">
+            {% if product.products_package.first.pack_length %}
+                <p>Length : {{ product.products_package.first.pack_length }}</p>
+            {% endif %}
+            {% if product.products_package.first.pack_width %}
+                <p>Width : {{ product.products_package.first.pack_width }}</p>
+            {% endif %}
+            {% if product.products_package.first.pack_height %}
+                <p>Height : {{ product.products_package.first.pack_height }}</p>
+            {% endif %}
+            {% if product.products_package.first.pack_weight %}
+                <p>Weight : {{ product.products_package.first.pack_weight }}</p>
+            {% endif %}
+            {% if product.products_package.first.pack_area %}
+                <p>Area : {{ product.products_package.first.pack_area }}</p>
+            {% endif %}
+            {% if product.products_package.first.pack_diameter %}
+                <p>Diameter : {{ product.products_package.first.pack_diameter }}</p>
+            {% endif %}
+
+
+        </div>
+    </div>
+</section>
+
+<!-- Comments -->
+
+<section id="modal_section_comments" class="modal_section_detail hide">
+    <div class="left_modal_section_comments"></div>
+    <div id="modal">
+        <div class="title_modal_close">
+            <h2>Comments</h2>
+            <i id="close_icon_modal_comments" class="bx bx-x"></i>
+        </div>
+        <hr/>
+        {#//////////////////////////// Write Comments#}
+        <h2 class="write_comments">Write Comment</h2>
+        <div class="container_for_write_comment hide_comment">
+            <h3>Please write a review</h3>
+            <form class="form_write_comment" method="post" novalidate>
+                {% csrf_token %}
+                {{ comment_form.as_p }}
+                <input type="submit" value="Submit Comment" class="submit_comments">
+            </form>
+        </div>
+
+
+        {#//////////////////////////// Show All Comments#}
+
+        <div class="all_comments">
+            <div class="comments">
+                {% for com in comments %}
+                    <div id="container_comments">
+                        <div class="user_date">
+                            <h6>User: {{ com.user.full_name }}</h6>
+
+                        </div>
+                        <h5>Title: {{ com.title }}</h5>
+                        <hr/>
+                        <textarea name="" id="textArea_content_comment"> {{ com.body }}</textarea>
+                        <div id="title_like_comment">
+                            <div class="like_comment_container"><h6>Helpful?</h6>
+                                <a href="{% url 'products:comment_like' com.id %}">
+                                    <i id="like_comment"
+                                       class="{{ com|cm_like_checker:request.user }} fa-thumbs-up"></i>
+                                </a>
+                                <a href="{% url 'products:comment_dislike' com.id %}">
+                                    <i id="like_comment"
+                                       class="{{ com|cm_dislike_checker:request.user }} fa-thumbs-down"></i>
+                                </a>
+                            </div>
+                            <p id="date_comment">{{ com.created|timesince }} ago</p>
+                        </div>
+                        {% with replies=com.replies.all %}
+
+                            {% for rep in replies %}
+                                <div id="textArea_content_reply_comment">
+                                    <div class="user_date">
+                                        <h6>User Reply: {{ rep.user.full_name }}</h6>
+
+                                    </div>
+                                    <p> {{ rep.body }}</p>
+                                    <div id="title_like_comment">
+                                        <div class="like_comment_container"><h6>Helpful?</h6>
+                                            <a href="{% url 'products:comment_reply_like' product.id com.id %}">
+
+                                                <i id="like_comment"
+                                                   class="{{ com|reply_like_checker:request.user }} fa-thumbs-up">
+                                                </i>
+                                            </a>
+                                        </div>
+                                        <p id="date_comment">{{ rep.created|timesince }} ago</p>
+                                    </div>
+                                </div>
+                            {% endfor %}
+
+                        {% endwith %}
+
+                    </div>
+                    {#//////////////////////////// Write reply#}
+                    <h2 class="write_comments_reply">Write Reply</h2>
+                    <div class="container_for_write_comment_reply hide_reply">
+                        <form action="?cm_id={{ com.id }}" class="form_write_comment_reply" method="post" novalidate>
+                            {% csrf_token %}
+                            {{ reply_form.as_p }}
+                            <input type="submit" value="Submit Comment" class="submit_comments">
+                        </form>
+                    </div>
+                {% endfor %}
+
+            </div>
+        </div>
+
+        <hr/>
+    </div>
+
+
+</section>
+
+
+{#varient_image#}
+
+
+{#<!-- varient image -->#}
+{% if product.status == 'color' %}
+    <section id="modal_section_varient_image" class="modal_section_detail hide">
+        <div class="left_modal_section_varient_image"></div>
+        <div id="modal">
+            <div class="title_modal_close">
+                <h2>Choose color</h2>
+                <i id="close_icon_modal_varient_image" class="bx bx-x"></i>
+            </div>
+            <div>
+
+                {% for p in product.product_vars.all %}
+
+                    <div id="btn_variant_color_flex_row">
+                        <img alt="variants" src=" {{ p.color.image_variant.url }}">
+                        <p> Color Name : {{ p.color.name }}</p>
+                        <h6> discount : {{ p.discount }} % </h6>
+                    </div>
+                {% endfor %}
+            </div>
+
+
+        </div>
+    </section>
+{% endif %}
+
+{% if product.status == 'size' %}
+    <section id="modal_section_varient_image" class="modal_section_detail hide">
+        <div class="left_modal_section_varient_image"></div>
+        <div id="modal">
+            <div class="title_modal_close">
+                <h2>Choose size</h2>
+                <i id="close_icon_modal_varient_image" class="bx bx-x"></i>
+            </div>
+            <div>
+
+                {% for p in product.product_vars.all %}
+
+                    <div id="btn_variant_color_flex_row">
+                        <p> Color Name : {{ p.dimension.dimension }}</p>
+                        <h6> discount : {{ p.discount }} % </h6>
+                    </div>
+                {% endfor %}
+            </div>
+
+
+        </div>
+    </section>
+{% endif %}
+
+
+{% if product.status == 'size_color' %}
+    <section id="modal_section_varient_image" class="modal_section_detail hide">
+        <div class="left_modal_section_varient_image"></div>
+        <div id="modal">
+            <div class="title_modal_close">
+                <h2>Choose color</h2>
+                <i id="close_icon_modal_varient_image" class="bx bx-x"></i>
+            </div>
+            <div class="title_modal_close">
+                <h2>Choose size</h2>
+                <i id="close_icon_modal_varient_image" class="bx bx-x"></i>
+            </div>
+
+
+            <div>
+
+                {% for p in product.product_vars.all %}
+
+                    <div id="btn_variant_color_flex_row">
+                        <img alt="variants" src=" {{ p.color.image_variant.url }}">
+                        <p> Color Name : {{ p.color.name }}</p>
+                        <h6> discount : {{ p.discount }} % </h6>
+                    </div>
+                {% endfor %}
+            </div>
+            <div>
+
+                {% for p in product.product_vars.all %}
+
+                    <div id="btn_variant_color_flex_row">
+                        <p> Color Name : {{ p.dimension.dimension }}</p>
+                        <h6> discount : {{ p.discount }} % </h6>
+                    </div>
+                {% endfor %}
+            </div>
+
+        </div>
+    </section>
+{% endif %}
+
+
+
+<section id="modal_section_profile" class="modal_section_detail hide">
+    <div class="left_modal_section_profile"></div>
+    <div id="modal">
+        <div class="title_modal_close_user_log">
+
+            {% if request.user.is_authenticated %}
+                <h4>Hi :
+                    {% if request.user.f_name %}
+                        {{ request.user.f_name }}
+                    {% else %}
+                        {{ request.user.phone_number }}
+                    {% endif %}
+                </h4>
+                <a href={% url 'accounts:logout' %}><span id="btn_log_out"><i id="logo_profile" class="bx bx-user"></i>Log Out</span></a>
+            {% endif %}
+
+
+        </div>
+        <div class="title_modal_heart_cart">
+            <a href="{% url 'products:liked_user_products' %}"><i class="fa-regular fa-heart"></i></a>
+            <div class="cart_counter">
+                <a href="{% url 'cart:cart' %}"><i id="order_icon" class="fa-solid fa-cart-plus"></i></a>
+                <span id="counter_order_profile">{{ cart_len }}</span>
+            </div>
+        </div>
+        <hr>
+        <div class="title_modal_close">
+            <h4>Options</h4>
+            <a href="{% url 'products:liked_user_products' %}"> Liked list </a>
+            <a href="{% url 'accounts:profile' %}"> Manage account </a>
+
+        </div>
+    </div>
+</section>
+
+
+<a href="" class="to_top_page hide_btn_">
+    <i class="fa fa-chevron-up"></i>
+</a>
+
+
+
+

@@ -1,0 +1,782 @@
+{% load static %}
+{% load product_filter_tag %}
+{% load humanize %}
+
+<!-- -- -- -- -- -- -- -- -- -- header  -- -- -- -- -- -- -- -- -- -- -->
+
+<section class="container_nav_ber">
+    <div class="menu">
+        <i id="menu_icon" class="bx bx-menu"></i>
+        <p>Menu</p>
+    </div>
+
+
+    <div id="like_cart_heart">
+
+        {% if not request.user.is_authenticated %}
+            <a href={% url 'accounts:login' %}>
+                <i id="logo_profile" class="bx bx-user"></i>
+                <span>Login/Register</span>
+
+
+                {% else %}
+                <span id="logo_profile_span"><i id="logo_profile" class="bx bx-user"></i>Hi
+                    {% if request.user.f_name %}
+                        {{ request.user.f_name }}
+                    {% else %}
+                        {{ request.user.phone_number }}
+                    {% endif %}
+                    </span>
+            </a>
+
+        {% endif %}
+
+        <a href="{% url 'products:liked_user_products' %}"><i class="fa-regular fa-heart"></i></a>
+
+        <div class="cart_counter">
+            <a href="{% url 'cart:cart' %}"><i id="order_icon" class="fa-solid fa-cart-plus"></i></a>
+            {#            <span id="counter_order">{{ cart_len }}</span>#}
+        </div>
+    </div>
+</section>
+<!-- -- -- -- -- -- -- -- -- -- End_header  -- -- -- -- -- -- -- -- -- -- -->
+
+<!-- -- -- -- -- -- -- -- -- -- category  -- -- -- -- -- -- -- -- -- ---->
+
+{##}
+
+<div id="nav_categoty">
+    {% for c in category %}
+        <a href="{% url 'products:c_products' c.id c.slug %}" class="btn_animation_"
+           id="category_items">{{ c.name }}</a>
+    {% endfor %}
+</div>
+
+
+<!-- -- -- -- -- -- -- -- -- -- End_category  -- -- -- -- -- -- -- -- -- ---->
+
+<!-- -- -- -- -- -- -- -- -- -- modal_menu  -- -- -- -- -- -- -- -- -- ---->
+
+<div class="container_menu_modal hide">
+    <div class="menu_left">
+        <div class="close_logo">
+            <i id="close_icon" class="bx bx-x"></i>
+            <p id="close_icon">Renovative Design</p>
+        </div>
+        <div class="menu_list_main">
+            <a href="{% url 'home:home' %}" id="menu_list_main">Home</a>
+            <a href="{% url 'products:products' %}" id="menu_list_main"> Product</a>
+            <a href="{% url 'accounts:login' %}" id="menu_list_main"> Register</a>
+            <a href="{% url 'cart:cart' %}" id="menu_list_main"> Order</a>
+        </div>
+
+        <div class="menu_list">
+            {% for c in category %}
+                {% if c.name == 'Storage & organisation' %}
+                    <a href="{% url 'products:c_products' c.id c.slug %}" id="menu_list">Storage &
+                        organisation</a>
+                {% endif %}
+            {% endfor %}
+
+            {% for c in category %}
+                {% if c.name == 'Furniture' %}
+                    <a href="{% url 'products:c_products' c.id c.slug %}" id="menu_list"> Furniture</a>
+                {% endif %}
+            {% endfor %}
+
+
+            {% for c in category %}
+                {% if c.name == 'Textiles' %}
+                    <a href="{% url 'products:c_products' c.id c.slug %}" id="menu_list"> Textiles</a>
+                {% endif %}
+            {% endfor %}
+
+            {% for c in category %}
+                {% if c.name == 'Accessories' %}
+                    <a href="{% url 'products:c_products' c.id c.slug %}" id="menu_list"> Accessories</a>
+                {% endif %}
+            {% endfor %}
+            {% for c in category %}
+                {% if c.name == 'Lighting' %}
+                    <a href="{% url 'products:c_products' c.id c.slug %}" id="menu_list"> Lighting</a>
+                {% endif %}
+            {% endfor %}
+            {% for c in category %}
+                {% if c.name == 'Kitchenware & tableware' %}
+                    <a href="{% url 'products:c_products' c.id c.slug %}" id="menu_list"> Kitchenware & tableware</a>
+                {% endif %}
+            {% endfor %}
+            {% for c in category %}
+                {% if c.name == 'Bathroom products' %}
+                    <a href="{% url 'products:c_products' c.id c.slug %}" id="menu_list"> Bathroom products</a>
+                {% endif %}
+            {% endfor %}
+            {% for c in category %}
+                {% if c.name == 'Outdoor products' %}
+                    <a href="{% url 'products:c_products' c.id c.slug %}" id="menu_list"> Outdoor products</a>
+                {% endif %}
+            {% endfor %}
+        </div>
+    </div>
+    <div class="bac_menu_right"></div>
+</div>
+<!-- -- -- -- -- -- -- -- -- -- End_modal_menu  -- -- -- -- -- -- -- -- -- ---->
+
+<!-- -- -- -- -- -- -- -- -- -- main_part  -- -- -- -- -- -- -- -- -- ---->
+
+<div class="container_main_part">
+    <div class="tex_content_main_part">
+        <h2 id="titre_main_content">Home accessories for everyday life</h2>
+
+        <div id="container_text_content_main_part">
+            <p id="text_content_main_part">
+                Having the perfect home is about more than just style, it's about
+                how it functions too. Discover smart products and solutions that
+                make your space as efficient, and cozy, as it is beautiful
+            </p>
+        </div>
+    </div>
+
+    <div class="container_image">
+        <div class="container_img_main_left">
+            <img id="img_main_left" alt="" src={% static 'product/media/main_part/left.webp' %}/>
+            <div class="all_dot_prices" id="all_dot_prices">
+                <!-- /* //////////////////////////////dot_price1//////////////////////// */ -->
+
+                <div class="dot_price_container">
+                    {% for p in products_dot.all %}
+                        {% if p.name == "DAKSJUS" %}
+                            <a class="a_container_dot" href="{{ p.get_absolute_url }}">
+                                <div class="dot_price" id="dot_price">
+                                    <div class="modal_detail_price hide" id="modal_detail_price">
+                                        <div class="detail_product">
+                                            <p>{{ p.name }}</p>
+                                            <p>Details:{{ p.desc|truncatechars:10 }}</p>
+                                            <h6> ${{ p.final_price }}</h6>
+                                        </div>
+                                        <div class="add_to_cart_like">
+
+                                            <a href="{% url 'products:product_like' p.id %}">
+                                                <span>
+                                                    <i id="like_count_product"
+                                                       class="{{ p|pr_like_checker:request.user }} fa-heart"></i>
+                                                </span>
+                                            </a>
+
+                                            <a href="{% url 'products:product_details' p.id p.slug %}"><i
+                                                    class="fa-solid fa-cart-plus"></i></a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </a>
+                        {% endif %}
+                    {% endfor %}
+
+                </div>
+                <!-- /* //////////////////////////////dot_price2//////////////////////// */ -->
+
+                <div class="dot_price_container2">
+                    {% for p in products_dot.all %}
+                        {% if p.name == "DAKSJU" %}
+                            <a class="a_container_dot" href="{{ p.get_absolute_url }}">
+                                <div class="dot_price">
+                                    <div class="modal_detail_price2 hide" id="modal_detail_price2">
+                                        <div class="detail_product">
+                                            <p>{{ p.name }}</p>
+                                            <p>{{ p.desc|truncatechars:10 }}</p>
+                                            <h6>${{ p.final_price }}</h6>
+                                        </div>
+                                        <div class="add_to_cart_like">
+                                            <a href="{% url 'products:product_like' p.id %}">
+                                                <span>
+                                                    <i id="like_count_product"
+                                                       class="{{ p|pr_like_checker:request.user }} fa-heart"></i>
+                                                </span>
+                                            </a>
+
+                                            <a href="{% url 'products:product_details' p.id p.slug %}"><i
+                                                    class="fa-solid fa-cart-plus"></i></a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </a>
+                        {% endif %}
+                    {% endfor %}
+
+                </div>
+
+                <!-- /* //////////////////////////////dot_price3////////////////////////    */ -->
+
+                <div class="dot_price_container3">
+                    {% for p in products_dot.all %}
+                        {% if p.name == "DAKSJUS BAMBO" %}
+                            <a class="a_container_dot" href="{{ p.get_absolute_url }}">
+                                <div class="dot_price">
+                                    <div class="modal_detail_price3 hide" id="modal_detail_price3">
+                                        <div class="detail_product">
+                                            <p>{{ p.name }}</p>
+                                            <p>{{ p.desc|truncatechars:10 }}</p>
+                                            <h6>${{ p.final_price }}</h6>
+                                        </div>
+                                        <div class="add_to_cart_like">
+                                            <a href="{% url 'products:product_like' p.id %}">
+                                                <span>
+                                                    <i id="like_count_product"
+                                                       class="{{ p|pr_like_checker:request.user }} fa-heart"></i>
+                                                </span>
+                                            </a>
+
+                                            <a href="{% url 'products:product_details' p.id p.slug %}"><i
+                                                    class="fa-solid fa-cart-plus"></i></a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </a>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+
+
+            </div>
+
+        </div>
+        <div class="container_img_main_right">
+            <div class="img_main_half_left">
+                <img alt=""
+                     id="right-left_half_up"
+                     src={% static 'product/media/main_part/right-left_half_up.avif' %}
+
+                />
+
+                <!-- /* //////////////////////////////dot_price_half_up////////////////////////    */ -->
+
+                <div class="dot_price_container_left_half_up">
+                    {% for p in products_dot.all %}
+                        {% if p.name == "DAKSJUS_Plant_stand" %}
+                            <a class="a_container_dot" href="{{ p.get_absolute_url }}">
+                                <div class="dot_price" id="dot_price">
+                                    <div
+                                            class="modal_detail_price_left_half_up hide"
+                                            id="modal_detail_price_left_half_up"
+                                    >
+                                        <div class="detail_product">
+                                            <p>{{ p.name }}</p>
+                                            <p>{{ p.desc|truncatechars:10 }}</p>
+                                            <h6>${{ p.final_price }}</h6>
+                                        </div>
+                                        <div class="add_to_cart_like">
+                                            <a href="{% url 'products:product_like' p.id %}">
+                                                <span>
+                                                    <i id="like_count_product"
+                                                       class="{{ p|pr_like_checker:request.user }} fa-heart"></i>
+                                                </span>
+                                            </a>
+
+                                            <a href="{% url 'products:product_details' p.id p.slug %}"><i
+                                                    class="fa-solid fa-cart-plus"></i></a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </a>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+
+                <img src={% static 'product/media/main_part/right-left_half_buttom.avif' %} "" alt=""/>
+
+                <div class="dot_price_container_left_half_buttom hide">
+
+                </div>
+            </div>
+            <div class="img_main_half_right">
+                <video
+                        controls
+                        autoplay
+                        id="video_half_right"
+                        src={% static 'product/media/main_part/video-right-right-up.mp4' %}
+                ></video>
+                <img alt=""
+                     id="img_half_right"
+                     src={% static 'product/media/main_part/right-right_half_buttom.avif' %}
+                />
+
+                <div class="dot_price_container44">
+                    {% for p in products_dot.all %}
+                        {% if p.name == "DAKSJUS_BOX" %}
+                            <a class="a_container_dot" href="{{ p.get_absolute_url }}">
+                                <div class="dot_price">
+                                    <div class="modal_detail_price44 hide" id="modal_detail_price44">
+                                        <div class="detail_product">
+                                            <p>{{ p.name }}</p>
+                                            <p>{{ p.desc|truncatechars:10 }}</p>
+                                            <h6>${{ p.final_price }}</h6>
+                                        </div>
+                                        <div class="add_to_cart_like">
+                                            <a href="{% url 'products:product_like' p.id %}">
+                                                <span>
+                                                    <i id="like_count_product"
+                                                       class="{{ p|pr_like_checker:request.user }} fa-heart"></i>
+                                                </span>
+                                            </a>
+
+                                            <a href="{% url 'products:product_details' p.id p.slug %}"><i
+                                                    class="fa-solid fa-cart-plus"></i></a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </a>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+</div>
+<!-- -- -- -- -- -- -- -- -- -- End_main_part  -- -- -- -- -- -- -- -- -- ---->
+
+<!-- -- -- -- -- -- -- -- -- -- sample  -- -- -- -- -- -- -- -- -- ---->
+
+<div class="container_sample">
+    <div class="sample">
+        <img alt="" id="img_samples" src={% static 'product/media/main_part/sample1.avif' %}/>
+        <h2><a href="#">Shop curated styles & trends</a></h2>
+        <p>Discover your interior design style and create your dream home.</p>
+    </div>
+    <div class="sample">
+        <img alt="" id="img_samples" src={% static 'product/media/main_part/sample2.avif' %}/>
+        <h2><a href="#">Explore featured shops</a></h2>
+        <p>
+            Discover seasonal highlights and gifting ideas that change throughout
+            the year.
+        </p>
+    </div>
+    <div class="sample">
+        <img alt="" id="img_samples" src={% static 'product/media/main_part/sample3.avif' %}/>
+        <h2><a href="#">Storage across the home</a></h2>
+        <p>
+            Storage ideas and tips that celebrate life - Your things reflect who
+            you are, your life and your stories. And like us, they need homes too.
+        </p>
+    </div>
+</div>
+<!-- -- -- -- -- -- -- -- -- -- End_sample  -- -- -- -- -- -- -- -- -- ---->
+<!-- -- -- -- -- -- -- -- -- -- Popular_homeware_categories  -- -- -- -- -- -- -- -- -- ---->
+<div class="container_popular_categories">
+    <div class="title_popular_category">
+        <h2>Popular homeware categories</h2>
+    </div>
+    <div class="container_img_Popular_homeware_categories">
+        <div class="img_Popular_homeware_categories">
+            <img alt=""
+                 src={% static 'product/media/main_part/Popular homeware categories/1.avif' %}
+
+            />
+            <p>Home Décor</p>
+        </div>
+        <div class="img_Popular_homeware_categories">
+            <img alt=""
+                 src={% static 'product/media/main_part/Popular homeware categories/2.webp' %}
+            />
+            <p>Lighting</p>
+        </div>
+        <div class="img_Popular_homeware_categories">
+            <img alt=""
+                 src={% static 'product/media/main_part/Popular homeware categories/3.avif' %}
+
+            />
+            <p>Cooking & Eating</p>
+        </div>
+        <div class="img_Popular_homeware_categories">
+            <img alt=""
+                 src={% static 'product/media/main_part/Popular homeware categories/4.avif' %}
+
+            />
+            <p>Home Textiles</p>
+        </div>
+        <div class="img_Popular_homeware_categories">
+            <img alt=""
+                 src={% static 'product/media/main_part/Popular homeware categories/5.avif' %}
+
+            />
+            <p>Rugs & Flooring</p>
+        </div>
+        <div class="img_Popular_homeware_categories">
+            <img alt=""
+                 src={% static "product/media/main_part/Popular homeware categories/6.avif" %}
+
+            />
+            <p>Storage & Organization</p>
+        </div>
+        <div class="img_Popular_homeware_categories">
+            <img alt=""
+                 src={% static "product/media/main_part/Popular homeware categories/7.webp" %}
+            />
+            <p>Home Electronics</p>
+        </div>
+        <div class="img_Popular_homeware_categories">
+            <img alt=""
+                 src={% static "product/media/main_part/Popular homeware categories/8.avif" %}
+
+            />
+            <p>Children & Nursery</p>
+        </div>
+        <div class="img_Popular_homeware_categories">
+            <img alt=""
+                 src={% static "product/media/main_part/Popular homeware categories/9.avif" %}
+
+            />
+            <p>Pet Accessories</p>
+        </div>
+        <div class="img_Popular_homeware_categories">
+            <img alt=""
+                 src={% static "product/media/main_part/Popular homeware categories/10.webp" %}
+
+            />
+            <p>Gardening & Plants</p>
+        </div>
+    </div>
+</div>
+<!-- -- -- -- -- -- -- -- -- -- End_Popular_homeware_categories  -- -- -- -- -- -- -- -- -- ---->
+
+<!-- -- -- -- -- -- -- -- -- -- designed_sorting  -- -- -- -- -- -- -- -- -- ---->
+
+<div class="container_designed_storing">
+    <h2>Designed for all sorts of sorting</h2>
+    <div class="content_text_designed_storing">
+        <p>
+            Everyone should be able to recycle at home, but managing waste can
+            require space that some don't have. The answer? DAMMANG - a series of
+            freestanding bins that stack and are designed to save space.
+        </p>
+        <span id="border_btn">Shop DAMMANG</span>
+    </div>
+    <div class="container_img_designed_storing">
+        <img alt=""
+             src={% static "product/media/main_part/Designed for all sorts of sorting/left.avif" %}
+
+        />
+        <!-- /* //////////////////////////////dot_price_designed_sorting////////////////////////    */ -->
+        <div class="dot_price_container_img_designed_storing">
+            {% for p in products_dot.all %}
+                {% if p.name == "DAMMÄNG" %}
+                    <a class="a_container_dot" href="{{ p.get_absolute_url }}">
+                        <div class="dot_price" id="dot_price">
+                            <div
+                                    class="modal_detail_price_img_designed_storing hide"
+                                    id="modal_detail_price_img_designed_storing"
+                            >
+                                <div class="detail_product">
+                                    <p>{{ p.name }}</p>
+                                    <p>{{ p.desc|truncatechars:10 }}</p>
+                                    <h6>${{ p.final_price }}</h6>
+                                </div>
+                                <div class="add_to_cart_like">
+                                    <a href="{% url 'products:product_like' p.id %}">
+                                                <span>
+                                                    <i id="like_count_product"
+                                                       class="{{ p|pr_like_checker:request.user }} fa-heart"></i>
+                                                </span>
+                                    </a>
+
+                                    <a href="{% url 'products:product_details' p.id p.slug %}">
+                                        <i class="fa-solid fa-cart-plus"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+
+                    </a>
+                {% endif %}
+            {% endfor %}
+        </div>
+
+        <div class="dot_price_container_img_designed_storing2">
+            {% for p in products_dot.all %}
+                {% if p.name == "DAMMÄNG GRAY" %}
+                    <a class="a_container_dot" href="{{ p.get_absolute_url }}">
+                        <div class="dot_price" id="dot_price">
+                            <div
+                                    class="modal_detail_price_img_designed_storing2 hide"
+                                    id="modal_detail_price_img_designed_storing2"
+                            >
+                                <div class="detail_product">
+                                    <p>{{ p.name }}</p>
+                                    <p>{{ p.desc|truncatechars:10 }}</p>
+                                    <h6>${{ p.final_price }}</h6>
+                                </div>
+                                <div class="add_to_cart_like">
+                                    <a href="{% url 'products:product_like' p.id %}">
+                                                <span>
+                                                    <i id="like_count_product"
+                                                       class="{{ p|pr_like_checker:request.user }} fa-heart"></i>
+                                                </span>
+                                    </a>
+                                    <a href="{% url 'products:product_details' p.id p.slug %}"><i
+                                            class="fa-solid fa-cart-plus"></i></a>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                {% endif %}
+            {% endfor %}
+        </div>
+
+
+        <img alt=""
+             src={% static "product/media/main_part/Designed for all sorts of sorting/right.avif" %}
+
+        />
+        <div class="dot_price_container_img_designed_storing4">
+            {% for p in products_dot.all %}
+                {% if p.name == "DAMMÄNG GRAY GREEN" %}
+                    <a class="a_container_dot" href="{{ p.get_absolute_url }}">
+                        <div class="dot_price" id="dot_price">
+                            <div
+                                    class="modal_detail_price_img_designed_storing4 hide"
+                                    id="modal_detail_price_img_designed_storing4"
+                            >
+                                <div class="detail_product">
+                                    <p>{{ p.name }}</p>
+                                    <p>{{ p.desc|truncatechars:10 }}</p>
+                                    <h6>${{ p.final_price }}</h6>
+                                </div>
+                                <div class="add_to_cart_like">
+                                    <a href="{% url 'products:product_like' p.id %}">
+                                                <span>
+                                                    <i id="like_count_product"
+                                                       class="{{ p|pr_like_checker:request.user }} fa-heart"></i>
+                                                </span>
+                                    </a>
+                                    <a href="{% url 'products:product_details' p.id p.slug %}"><i
+                                            class="fa-solid fa-cart-plus"></i></a>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                {% endif %}
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+<!-- -- -- -- -- -- -- -- -- -- modal_menu_share  -- -- -- -- -- -- -- -- -- ---->
+<div class="btn_share_modal">
+    <i class="bx bxs-share-alt"></i>
+    <p>share</p>
+</div>
+<div class="btn_share_modal_coppyeid hide">
+    The link has been copied
+    <i id="close_icon_btn_share_modal_coppyeid" class="bx bx-x"></i>
+</div>
+
+<div class="container_menu_modal_sahare hide">
+    <div class="menu_right_modal_share">
+        <div class="close_icon_modal_share">
+            <i id="close_icon_modal_share" class="bx bx-x"></i>
+            <div class="modal_share_img_text">
+                <img alt=""
+                     id="img_modal_share"
+                     src={% static "product/media/main_part/modal_menu/modal_menu_img.avif" %}
+
+                />
+                <div class="text_content_modal_share">
+                    <h3>IKEA Marketplace: Home Accents, Accessories & More</h3>
+                    <p>
+                        Browse beautiful and practical IKEA home accessories. Shop
+                        homeware, décor, lighting, rugs, storage, electronics and more
+                        by category, style, or color.
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="menu_list_main_modal_share">
+            <a href="#" id="menu_list_main_modal_share"
+            ><i class="bx bxl-pinterest"></i>Pinterest</a
+            >
+            <a href="#" id="menu_list_main_modal_share"
+            ><i class="bx bxl-facebook-square"></i> Facebook</a
+            >
+            <a href="#" id="menu_list_main_modal_share"
+            ><i class="fa-brands fa-x-twitter"></i> Twitter</a
+            >
+            <a
+                    href="#"
+                    id="menu_list_main_modal_share"
+                    class="coppy_link_modal_share"
+            ><i class="fa-solid fa-copy coppy_link_modal_share"></i> Coppy
+                Link</a
+            >
+        </div>
+    </div>
+    <div class="bac_menu_right_modal_share"></div>
+</div>
+<!-- -- -- -- -- -- -- -- -- -- End_modal_menu_share -- -- -- -- -- -- -- -- -- ---->
+
+<!-- -- -- -- -- -- -- -- -- -- scroll_bar-- -- -- -- -- -- -- -- -- ---->
+
+<h2 id="titile_scroll_bar">New home accessories_backend</h2>
+
+<div class="container_slide_bar">
+    <i id="arrow_scroll_left" class="bx bx-left-arrow"></i>
+    <div class="container_card_scroll">
+        {% for p in products_scroll %}
+            <a href="{{ p.get_absolute_url }}">
+                <div class="card_scroll">
+                    <div class="img_card_scroll">
+                        <div id="0">
+                            <img alt="" class="img_up_for_hover" id="up"
+                                 src='{{ p.image.url }}'
+                            />
+                        </div>
+                        <div class="hide_hover_scroll_bar" id="1">
+                            <img id="buttom"
+                                 class="img_bottum_for_hover"
+                                 alt=""
+                                 src='{{ p.image_hover.url }}'
+
+                            />
+                        </div>
+                    </div>
+
+                    <div class="price_details">
+                        <h5>{{ p.name }}</h5>
+                        <h6>{{ p.tag.first }}</h6>
+
+                        <p> size of product:
+                            {% if p.size_length %}
+                                {{ p.size_length }} x
+                            {% endif %}
+                            {% if p.size_width %}
+                                {{ p.size_width }}
+                            {% endif %}
+                            {% if p.size_height %}
+                                x {{ p.size_height }}
+                            {% endif %}                    </p>
+                        <h5>${{ p.unit_price|intcomma }}</h5>
+                        <div class="heart_cart_scroll_bar">
+                            <i id="hover_select" class="fa-regular fa-heart"></i>
+                            <i id="hover_select" class="fa-solid fa-cart-plus"></i>
+                        </div>
+                    </div>
+                </div>
+            </a>
+        {% endfor %}
+
+    </div>
+    <i id="arrow_scroll_right" class="bx bx-right-arrow"></i>
+</div>
+
+
+<!-- -- -- -- -- -- -- -- -- -- End_scroll_bar-- -- -- -- -- -- -- -- -- ---->
+
+<!-------------------------- Footer_section -------------------------------------->
+
+<section>
+    <div class="back_graound">
+        <div class="content_footer">
+            <h3>Address</h3>
+            <br/>
+            <p>
+                <i id="pad_white" class="fa-solid fa-location-dot"></i>123 Street,
+                New York, USA
+            </p>
+            <p><i id="pad_white" class="fa-solid fa-phone"></i>+012 345 67890</p>
+            <p>
+                <i id="pad_white" class="fa-solid fa-envelope"></i>info@example.com
+            </p>
+            <div id="social_media_to_contact">
+                <i id="logo_border" class="fa-brands fa-instagram"></i>
+                <i id="logo_border" class="fa-brands fa-linkedin"></i>
+                <i id="logo_border" class="fa-brands fa-youtube"></i>
+                <i id="logo_border" class="fa-brands fa-twitter"></i>
+            </div>
+        </div>
+        <div class="content_footer">
+            <h3>Services</h3>
+            <br/>
+            <a href="{% url 'products:products' %}"
+            ><i id="pad_white" class="fa-solid fa-caret-right"></i>Buy Accessories</a
+            >
+            <a href=" {% url 'home:all_products' %}"
+            ><i id="pad_white" class="fa-solid fa-caret-right"></i>Category</a
+            >
+            <a href="#"
+            ><i id="pad_white" class="fa-solid fa-caret-right"></i>Blogs</a
+            >
+            <a href="#"
+            ><i id="pad_white" class="fa-solid fa-caret-right"></i>Services</a
+            >
+        </div>
+        <div class="content_footer">
+            <h3>Quick Links</h3>
+            <br/>
+            <a href="#about_us_link"
+            ><i id="pad_white" class="fa-solid fa-caret-right"></i>About Us</a
+            >
+            <p class="contact_us_share"
+            ><i id="pad_white" class="fa-solid fa-caret-right "></i>Contact Us</p
+            >
+            <a href="#"
+            ><i id="pad_white" class="fa-solid fa-caret-right"></i>Our
+                Services</a
+            >
+
+        </div>
+
+        <div class="content_footer">
+            <h3>Newsletter</h3>
+            <br/>
+            <p>You can try free for once!!</p>
+            <br/>
+
+            <div class="input_search">
+                <input id="input_search_email" type="email" placeholder="Your Email">
+                <span id="blue_btn">Sign Up</span>
+            </div>
+        </div>
+    </div>
+</section>
+<!-------------------------- End_Footer_section -------------------------------------->
+
+
+<section id="modal_section_profile" class="modal_section_detail hide">
+    <div class="left_modal_section_profile"></div>
+    <div id="modal">
+        <div class="title_modal_close_user_log">
+
+            {% if request.user.is_authenticated %}
+                <h4>Hi :
+                    {% if request.user.f_name %}
+                        {{ request.user.f_name }}
+                    {% else %}
+                        {{ request.user.phone_number }}
+                    {% endif %}
+                </h4>
+                <a href={% url 'accounts:logout' %}><span id="btn_log_out"><i id="logo_profile" class="bx bx-user"></i>Log Out</span></a>
+            {% endif %}
+
+
+        </div>
+        <div class="title_modal_heart_cart">
+            <a href="{% url 'products:liked_user_products' %}"><i class="fa-regular fa-heart"></i></a>
+            <div class="cart_counter">
+                <a href="{% url 'cart:cart' %}"><i id="order_icon" class="fa-solid fa-cart-plus"></i></a>
+                <span id="counter_order_profile">{{ cart_len }}</span>
+            </div>
+        </div>
+        <hr>
+        <div class="title_modal_close">
+            <h4>Options</h4>
+
+            <a href="{% url 'products:liked_user_products' %}"> Liked list </a>
+            <a href="{% url 'accounts:profile' %}"> Manage account </a>
+
+        </div>
+    </div>
+</section>
+
+<a href="" class="to_top_page hide_btn_">
+    <i class="fa fa-chevron-up"></i>
+</a>

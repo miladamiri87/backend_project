@@ -1,0 +1,275 @@
+{% load static %}
+{% load product_filter_tag %}
+{% load humanize %}
+
+
+<section class="container_nav_ber">
+    <div class="menu">
+        <i id="menu_icon" class="bx bx-menu"></i>
+        <p>Menu</p>
+    </div>
+    <div id="logo_search">
+        <img alt="Renovative_Design" title="Renovative_Design" id="logo_"
+             src={% static 'product/media/header/logo1.png' %}
+        />
+        <i id="search_icon" class="fa-solid fa-magnifying-glass"></i>
+        <form id="search" action="" method="get">
+            {{ search_form }}
+            <input id="search_btn" type="submit" value="search">
+        </form>
+    </div>
+    <div id="like_cart_heart">
+        <div class="logIn">
+
+            {% if not request.user.is_authenticated %}
+                <a href={% url 'accounts:login' %}>
+                    <i id="logo_profile" class="bx bx-user"></i>
+                    <span>Login/Register</span>
+
+
+                    {% else %}
+                    <span id="logo_profile_span"><i id="logo_profile" class="bx bx-user"></i>Hi
+                        {% if request.user.f_name %}
+                            {{ request.user.f_name }}
+                        {% else %}
+                            {{ request.user.phone_number }}
+                        {% endif %}
+                    </span>
+                </a>
+
+            {% endif %}
+        </div>
+
+        <a href="{% url 'products:liked_user_products' %}"><i class="fa-regular fa-heart"></i></a>
+
+        <div class="cart_counter">
+            <a href="{% url 'cart:cart' %}"><i id="order_icon" class="fa-solid fa-cart-plus"></i></a>
+{#            <span id="counter_order">{{ cart_len }}</span>#}
+        </div>
+    </div>
+</section>
+<!-- -- -- -- -- -- -- -- -- -- End_header  -- -- -- -- -- -- -- -- -- -- -->
+
+<!-- -- -- -- -- -- -- -- -- -- category  -- -- -- -- -- -- -- -- -- ---->
+
+<div id="nav_categoty">
+    {% for c in category %}
+        <a href="{% url 'products:c_products' c.id c.slug %}" id="category_items">{{ c.name }}</a>
+    {% endfor %}
+</div>
+<!-- -- -- -- -- -- -- -- -- -- End_category  -- -- -- -- -- -- -- -- -- ---->
+<div class="container_all_content">
+
+
+    <div class="container_content">
+        <div class="filters">
+            <form id="form_filter" action="">
+
+                {{ filters.form.as_p }}
+                <input id="search_btn" type="submit" value="Filter">
+
+            </form>
+
+        </div>
+        <div id="content_right">
+            <h2 id="detail_related_product">Related products</h2>
+            <div class="container_card_scroll">
+
+                {% for p in products %}
+
+                    <div class="card_scroll">
+                        <a href="{{ p.get_absolute_url }}">
+
+                            <div class="img_card_scroll">
+                                <div id="0">
+                                    <img alt="" class="img_up_for_hover" id="up"
+                                         src='{{ p.image.url }}'
+                                    />
+                                </div>
+                                <div class="hide_hover_scroll_bar" id="1">
+                                    <img id="buttom"
+                                         class="img_bottum_for_hover"
+                                         alt=""
+                                         src='{{ p.image_hover.url }}'
+
+                                    />
+                                </div>
+                            </div>
+                        </a>
+
+
+                        <div class="price_details">
+                            <h5>{{ p.name }}</h5>
+                            <h6>{{ p.tag.first }}</h6>
+
+                            <h5>size of product:
+                                {% if p.size_length %}
+                                    {{ p.size_length }} x
+                                {% endif %}
+                                {% if p.size_width %}
+                                    {{ p.size_width }}
+                                {% endif %}
+                                {% if p.size_height %}
+                                    x  {{ p.size_height }}
+                                {% endif %}
+
+                            </h5>
+                            <hr>
+                            <h3 id="price">${{ p.unit_price|intcomma }}
+
+                            </h3>
+
+                            <div class="heart_cart_scroll_bar">
+                                <div>
+                                    <a href="{% url 'products:product_like' p.id %}">
+                                        <span><i id="hover_select"
+                                                 class="{{ p|pr_like_checker:request.user }} fa-heart like_container"></i></span>
+                                    </a>
+                                    <span id="like_count">({{ p.likers_count }})</span>
+                                </div>
+                                <a href="{% url 'products:product_details' p.id p.slug %}" id="hover_select"
+                                   class="fa-solid fa-cart-plus"></a>
+                            </div>
+
+                        </div>
+                    </div>
+
+
+
+                {% endfor %}
+            </div>
+        </div>
+
+    </div>
+    <nav aria-label="Page navigation example">
+        <ul class="pagination">
+            {% if products.has_previous %}
+                <li class="page-item"><a class="page-link"
+                                         href="?page={{ products.previous_page_number }}&{{ url_data }}">
+                    Previous
+                </a></li>
+            {% else %}
+                <li class="page-item disabled"><a class="page-link" href="#">Previous</a></li>
+            {% endif %}
+
+            <li class="page-item active"><a class="page-link" href="#">{{ products.number }}</a></li>
+
+            {% if products.has_next %}
+                <li class="page-item"><a class="page-link"
+                                         href="?page={{ products.next_page_number }}&{{ url_data }}">
+                    Next
+                </a></li>
+            {% else %}
+                <li class="page-item disabled"><a class="page-link" href="#">Next</a></li>
+            {% endif %}
+
+        </ul>
+    </nav>
+
+</div>
+<!-- -- -- -- -- -- -- -- -- -- modal_menu  -- -- -- -- -- -- -- -- -- ---->
+
+<div class="container_menu_modal hide">
+    <div class="menu_left">
+        <div class="close_logo">
+            <i id="close_icon" class="bx bx-x"></i>
+            <p id="close_icon">Renovative Design</p>
+        </div>
+        <div class="menu_list_main">
+            <a href="{% url 'home:home' %}" id="menu_list_main">Home</a>
+            <a href="{% url 'products:products' %}" id="menu_list_main"> Product</a>
+            <a href="{% url 'accounts:login' %}" id="menu_list_main"> Register</a>
+            <a href="{% url 'cart:cart' %}" id="menu_list_main"> Order</a>
+        </div>
+
+        <div class="menu_list">
+            {% for c in category %}
+                {% if c.name == 'Storage & organisation' %}
+                    <a href="{% url 'products:c_products' c.id c.slug %}" id="menu_list">Storage &
+                        organisation</a>
+                {% endif %}
+            {% endfor %}
+
+            {% for c in category %}
+                {% if c.name == 'Furniture' %}
+                    <a href="{% url 'products:c_products' c.id c.slug %}" id="menu_list"> Furniture</a>
+                {% endif %}
+            {% endfor %}
+
+
+            {% for c in category %}
+                {% if c.name == 'Textiles' %}
+                    <a href="{% url 'products:c_products' c.id c.slug %}" id="menu_list"> Textiles</a>
+                {% endif %}
+            {% endfor %}
+
+            {% for c in category %}
+                {% if c.name == 'Accessories' %}
+                    <a href="{% url 'products:c_products' c.id c.slug %}" id="menu_list"> Accessories</a>
+                {% endif %}
+            {% endfor %}
+            {% for c in category %}
+                {% if c.name == 'Lighting' %}
+                    <a href="{% url 'products:c_products' c.id c.slug %}" id="menu_list"> Lighting</a>
+                {% endif %}
+            {% endfor %}
+            {% for c in category %}
+                {% if c.name == 'Kitchenware & tableware' %}
+                    <a href="{% url 'products:c_products' c.id c.slug %}" id="menu_list"> Kitchenware & tableware</a>
+                {% endif %}
+            {% endfor %}
+            {% for c in category %}
+                {% if c.name == 'Bathroom products' %}
+                    <a href="{% url 'products:c_products' c.id c.slug %}" id="menu_list"> Bathroom products</a>
+                {% endif %}
+            {% endfor %}
+            {% for c in category %}
+                {% if c.name == 'Outdoor products' %}
+                    <a href="{% url 'products:c_products' c.id c.slug %}" id="menu_list"> Outdoor products</a>
+                {% endif %}
+            {% endfor %}
+        </div>
+    </div>
+    <div class="bac_menu_right"></div>
+</div>
+<!-- -- -- -- -- -- -- -- -- -- End_modal_menu  -- -- -- -- -- -- -- -- -- ---->
+
+
+<section id="modal_section_profile" class="modal_section_detail hide">
+    <div class="left_modal_section_profile"></div>
+    <div id="modal">
+        <div class="title_modal_close_user_log">
+
+            {% if request.user.is_authenticated %}
+                <h4>Hi :
+                    {% if request.user.f_name %}
+                        {{ request.user.f_name }}
+                    {% else %}
+                        {{ request.user.phone_number }}
+                    {% endif %}
+                </h4>
+                <a href={% url 'accounts:logout' %}><span id="btn_log_out"><i id="logo_profile" class="bx bx-user"></i>Log Out</span></a>
+            {% endif %}
+
+
+        </div>
+        <div class="title_modal_heart_cart">
+            <a href="{% url 'products:liked_user_products' %}"><i class="fa-regular fa-heart"></i></a>
+            <div class="cart_counter">
+                <a href="{% url 'cart:cart' %}"><i id="order_icon" class="fa-solid fa-cart-plus"></i></a>
+                <span id="counter_order_profile">{{ cart_len }}</span>
+            </div>
+        </div>
+        <hr>
+        <div class="title_modal_close">
+            <h4>Options</h4>
+            <a href="{% url 'products:liked_user_products' %}"> Liked list </a>
+            <a href="{% url 'accounts:profile' %}"> Manage account </a>
+
+        </div>
+    </div>
+</section>
+
+<a href="" class="to_top_page hide_btn_">
+    <i class="fa fa-chevron-up"></i>
+</a>

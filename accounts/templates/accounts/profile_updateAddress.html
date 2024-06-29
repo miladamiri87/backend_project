@@ -1,0 +1,36 @@
+{% extends '_base.html' %}
+{% load static %}
+
+{% block css %}
+    {#    <link rel="stylesheet" href="{% static 'home/css/home.css' %}">#}
+    {#    <link rel="stylesheet" href="{% static 'home/css/_base.css' %}">#}
+    <link rel="stylesheet" href="{% static 'home/css/accounts/change_password.css' %}">
+{% endblock %}
+
+
+{% block title %}
+    Login Page
+{% endblock %}
+
+{% block messages %}
+    {% include 'incs/messages_without_navbar.html' %}
+{% endblock %}
+
+
+{% block content %}
+    <div class="container_forms">
+        <div class="container_forms_left">
+            <h1>Renovative Design</h1>
+        </div>
+        <div class="container_forms_right">
+            <div><h5>Edit Your Options:</h5>
+                <form class="create_new_account_from_profile" action="" method="post" novalidate class="col-md-4">
+                    {% csrf_token %}
+                    {{ form.as_p }}
+                    <input class="btn" type="submit" value="Send">
+                </form>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

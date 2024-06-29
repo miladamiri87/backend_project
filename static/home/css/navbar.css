@@ -1,0 +1,43 @@
+.header {
+    display: flex;
+}
+
+.pad {
+    padding-left: 2rem;
+    padding-right: 2rem;
+}
+
+.margin {
+    margin-left: 2rem;
+    margin-right: 2rem;
+}
+
+.container_navbar {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    padding: 2rem;
+}
+
+.logo_brand {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+}
+
+.container_img img {
+    width: 3rem;
+    /*display: none;*/
+}
+
+.container_img {
+    display: flex;
+
+}
+.nav_item{
+    display: flex;
+    justify-content: space-around;
+}
+p, h1, h2, h3, h4, h5 {
+    margin: 0 !important;
+}

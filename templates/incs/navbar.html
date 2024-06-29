@@ -1,0 +1,35 @@
+{% load static %}
+
+{#<link rel="stylesheet" href="{% static 'home/css/navbar.css' %}">#}
+
+<section class="header">
+    <div class="container_navbar">
+
+        <div class="logo_brand">
+            <h1 class="container_img">
+                <img src="{% static 'home/img/logo1.png' %}" title="Renovative Design" alt="Renovative Design"/>
+            </h1>
+            <p id="title-logo">Renovative Design</p>
+
+        </div>
+        <div class="nav_item">
+            <div><a href="#">Home</a>
+            </div>
+            <div><a href="{% url 'products:products' %}">Product</a>
+            </div>
+            <div><a href="#">Resources</a>
+            </div>
+            <div><a href="#">Pricing</a>
+            </div>
+            <div><a href="#">Company</a>
+            </div>
+
+            {% if not request.user.is_authenticated %}
+                <a href="{% url 'accounts:login' %}"><span>Login/ Register</span></a>
+            {% else %}
+                <a href="{% url 'accounts:logout' %}"><span>logout</span></a>
+            {% endif %}
+
+        </div>
+    </div>
+</section>

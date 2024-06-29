@@ -1,0 +1,40 @@
+{% extends '_base.html' %}
+{% load static %}
+
+{% block css %}
+    <link rel="stylesheet" href="{% static 'home/css/accounts/verify-register.css' %}">
+{% endblock %}
+
+{% block title %}
+    Verify Payment Page
+{% endblock %}
+
+
+{% block messages %}
+    {% include 'incs/messages_without_navbar.html' %}
+{% endblock %}
+
+
+
+{% block content %}
+    <div class="container_forms">
+        <div class="container_forms_left">
+            <h1>Renovative Design</h1>
+        </div>
+        <div class="container_forms_right">
+
+            <h2>Status of Your pay:<br/></h2>
+            {% if order.paid %}
+                <p class="alert alert-success">Successful transaction</p>
+                <h3>order tracking number: {{ order.tracking_number }}</h3>
+            {% else %}
+                <p class="alert alert-danger">Transaction failed</p>
+                <h3>order tracking number: {{ order.tracking_number }}</h3>
+            {% endif %}
+            <hr>
+            <a href="{% url 'home:home' %}">Back to Home</a>
+        </div>
+    </div>
+
+
+{% endblock %}

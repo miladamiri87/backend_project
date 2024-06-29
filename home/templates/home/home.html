@@ -1,0 +1,28 @@
+{% extends '_base.html' %}
+{% load static %}
+
+{% block css %}
+    <link rel="stylesheet" href="{% static 'home/css/home.css' %}">
+
+
+{% endblock %}
+
+
+{% block title %}
+    Home Pages
+{% endblock %}
+{% block messages %}
+     {% include 'incs/messages.html' %}
+{% endblock %}
+
+
+
+{% block content %}
+    {% include 'home/home-content.html' %}
+{% endblock %}
+
+
+{% block sctipts %}
+    <script src={% static 'home/scripts/home_script.js' %}></script>
+
+{% endblock %}

@@ -1,0 +1,448 @@
+{% load static %}
+{% load product_filter_tag %}
+{% load humanize %}
+
+
+<!-- -- -- -- -- -- -- -- -- -- header  -- -- -- -- -- -- -- -- -- -- -->
+
+<section class="container_nav_ber">
+    <div class="menu">
+        <i id="menu_icon" class="bx bx-menu"></i>
+        <p>Menu</p>
+    </div>
+    <div id="logo_search">
+        <img
+                id="logo_"
+                src="{% static "product/media/header/logo1.png" %}"
+                title="Renovative Design"
+                alt="Renovative Design"
+        />
+        <i id="search_icon" class="fa-solid fa-magnifying-glass"></i>
+        <input
+                id="search"
+                type="search"
+                placeholder="What are you looking for?"
+        />
+    </div>
+    <div id="like_cart_heart">
+        <div class="logIn">
+
+            {% if not request.user.is_authenticated %}
+                <a href={% url 'accounts:login' %}>
+                    <i id="logo_profile" class="bx bx-user"></i>
+                    <span>Login/Register</span>
+
+
+                    {% else %}
+                    <span id="logo_profile_span"><i id="logo_profile" class="bx bx-user"></i>Hi
+                        {% if request.user.f_name %}
+                            {{ request.user.f_name }}
+                        {% else %}
+                            {{ request.user.phone_number }}
+                        {% endif %}
+                    </span>
+                </a>
+
+            {% endif %}
+        </div>
+
+        <a href="{% url 'products:liked_user_products' %}"><i id="like_icon" class="fa-regular fa-heart"></i></a>
+
+
+    </div>
+</section>
+<!-- -- -- -- -- -- -- -- -- -- End_header  -- -- -- -- -- -- -- -- -- -- -->
+
+<!------------------------------ Detail of client for submit order ------------------------------------------>
+
+
+<section class="container_order">
+    <div class="container_left_order">
+        <h2>Enter Information's Client</h2>
+        <form id="form_info_for_creat" action="" method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <div class="container_checkOut ">
+                <input type="submit" value="Next">
+            </div>
+
+
+        </form>
+    </div>
+
+
+    <div class="container_order_right">
+        <h2>Order summary</h2>
+
+        <hr>
+        <table class="table">
+            <thead>
+            <tr>
+                <th scope="col">Product</th>
+                <th scope="col">Quantity</th>
+                <th scope="col">Unit Price</th>
+                <th scope="col">Total Price</th>
+            </tr>
+            </thead>
+            <tbody>
+
+            {% for p in cart %}
+                <tr>
+                    <td><a href="{{ p.url }}">{{ p.product }}</a></td>
+                    <td>
+                        {{ p.quantity }}
+                    </td>
+                    <td>{{ p.price|intcomma }}</td>
+                    <td>{{ p.total_price|intcomma }}</td>
+
+                </tr>
+            {% endfor %}
+
+            {% for p in variant_cart %}
+                <tr>
+                    <td><a href="{{ p.url }}">{{ p.product }}</a></td>
+
+                    <td>
+                        {{ p.quantity }}
+                    </td>
+                    <td>{{ p.price|intcomma }}</td>
+                    <td>{{ p.total_price|intcomma }}</td>
+
+                </tr>
+            {% endfor %}
+
+
+            </tbody>
+        </table>
+        <div class="total_product_price">
+            <p id="total_products_price">Total products price</p>
+            <h4>${{ cart.get_total_price|add:variant_cart.total_price|intcomma }}</h4>
+        </div>
+    </div>
+</section>
+{#<div class="modal_option_order"></div>#}
+
+
+{##}
+{#        <!------------------------------------------------------------------------------------------ cart -->#}
+{#                {% for p in cart %}#}
+{#                    <div class="orders_carts">#}
+{#                        <div class="title_optionIcon">#}
+{#                            <h1>No. Order: {{ forloop.counter }}</h1>#}
+{#                            <i id="modal_option" class="bx bx-dots-horizontal-rounded"></i>#}
+{#                        </div>#}
+{#                        <div class="container_order_dtail_left">#}
+{#                            <div class="img_size">#}
+{#                                <img#}
+{#                                        {% for product in all_products %}#}
+{#                                            {% if product.id == p.id %}#}
+{#                                                src="{{ product.image.url }}"#}
+{#                                            {% endif %}#}
+{#                                        {% endfor %}#}
+{#                                                alt=""#}
+{#                                />#}
+{#                                <div class="detail_size_left">#}
+{#                                    <a href="{{ p.url }}"><h3>{{ p.product }}</h3></a>#}
+{#                                    <div class="count_like_delet">#}
+{#                                        <div class="counter_order">#}
+{#                                            <a href="{% url 'cart:remove_one_from_cart' p.id %}">#}
+{#                                                <i class="bx bx-minus"></i>#}
+{#                                            </a>#}
+{#                                            <span id="quantity_cart">{{ p.quantity }}</span>#}
+{#                                            <a href="{% url 'cart:add_one_to_cart' p.id %}">#}
+{#                                                <i class="bx bx-plus"></i>#}
+{#                                            </a>#}
+{#                                        </div>#}
+{#                                        <i class="bx bx-heart"></i>#}
+{#                                        <a href="{% url 'cart:remove_from_cart' p.id %}">#}
+{#                                            <i class="bx bx-trash"></i>#}
+{#                                        </a>#}
+{#                                    </div>#}
+{##}
+{#                                </div>#}
+{#                            </div>#}
+{##}
+{#                            <h3 id="price_left">${{ p.price }}</h3>#}
+{##}
+{#                        </div>#}
+{##}
+{##}
+{#                    </div>#}
+{#                {% endfor %}#}
+{#        <!------------------------------------------------------------------------------------------ End_cart -->#}
+{##}
+{##}
+{#        <!------------------------------------------------------------------------------------------ Variant_Cart -->#}
+{#                {% for p in variant_cart %}#}
+{#                    <div class="orders_carts">#}
+{#                        <div class="title_optionIcon">#}
+{#                            <h1>No. Order: {{ forloop.counter }}</h1>#}
+{#                            <i id="modal_option" class="bx bx-dots-horizontal-rounded"></i>#}
+{#                        </div>#}
+{#                        <div class="container_order_dtail_left">#}
+{#                            <div class="img_size">#}
+{#                                <img#}
+{#                                        {% for product in all_products %}#}
+{#                                            {% if product.id == p.id %}#}
+{#                                                src="{{ product.image.url }}"#}
+{#                                            {% endif %}#}
+{#                                        {% endfor %}#}
+{#                                                alt=""#}
+{#                                />#}
+{#                                <div class="detail_size_left">#}
+{#                                    <a href="{{ p.url }}"><h3>{{ p.product }}</h3></a>#}
+{#                                    <div class="count_like_delet">#}
+{#                                        <div class="counter_order">#}
+{#                                            <a href="{% url 'cart:remove_one_from_cart' p.id %}">#}
+{#                                                <i class="bx bx-minus"></i>#}
+{#                                            </a>#}
+{#                                            <span id="quantity_cart">{{ p.quantity }}</span>#}
+{#                                            <a href="{% url 'cart:add_one_to_cart' p.id %}">#}
+{#                                                <i class="bx bx-plus"></i>#}
+{#                                            </a>#}
+{#                                        </div>#}
+{#                                        <i class="bx bx-heart"></i>#}
+{#                                        <a href="{% url 'cart:remove_from_cart' p.id %}">#}
+{#                                            <i class="bx bx-trash"></i>#}
+{#                                        </a>#}
+{#                                    </div>#}
+{##}
+{#                                </div>#}
+{#                            </div>#}
+{##}
+{#                            <h3 id="price_left">${{ p.price }}</h3>#}
+{##}
+{#                        </div>#}
+{##}
+{##}
+{#                    </div>#}
+{#                {% endfor %}#}
+{#        <!------------------------------------------------------------------------------------------ End_Variant_Cart -->#}
+{##}
+{##}
+<!------------------------------------------------------------------------------------------ footer -->
+
+<section class="footer">
+    <div class="back_graound">
+        <div class="content_footer">
+            <h3>Address</h3>
+            <br/>
+            <p>
+                <i id="pad_white" class="fa-solid fa-location-dot"></i>123 Street,
+                New York, USA
+            </p>
+            <p><i id="pad_white" class="fa-solid fa-phone"></i>+012 345 67890</p>
+            <p>
+                <i id="pad_white" class="fa-solid fa-envelope"></i>info@example.com
+            </p>
+            <div>
+                <i id="logo_border" class="fa-brands fa-instagram"></i>
+                <i id="logo_border" class="fa-brands fa-linkedin"></i>
+                <i id="logo_border" class="fa-brands fa-youtube"></i>
+                <i id="logo_border" class="fa-brands fa-twitter"></i>
+            </div>
+        </div>
+        <div class="content_footer">
+            <h3>Services</h3>
+            <br/>
+            <a href="#"
+            ><i id="pad_white" class="fa-solid fa-caret-right"></i>Cardialogy</a
+            >
+            <a href="#"
+            ><i id="pad_white" class="fa-solid fa-caret-right"></i>Pulmonary</a
+            >
+            <a href="#"
+            ><i id="pad_white" class="fa-solid fa-caret-right"></i>Neurology</a
+            >
+            <a href="#"
+            ><i id="pad_white" class="fa-solid fa-caret-right"></i>orthopedi</a
+            >
+            <a href="#"
+            ><i id="pad_white" class="fa-solid fa-caret-right"></i>Laboratory</a
+            >
+        </div>
+        <div class="content_footer">
+            <h3>Quick Links</h3>
+            <br/>
+            <a href="#"
+            ><i id="pad_white" class="fa-solid fa-caret-right"></i>About Us</a
+            >
+            <a href="#"
+            ><i id="pad_white" class="fa-solid fa-caret-right"></i>Contact Us</a
+            >
+            <a href="#"
+            ><i id="pad_white" class="fa-solid fa-caret-right"></i>Our
+                Services</a
+            >
+            <a href="#"
+            ><i id="pad_white" class="fa-solid fa-caret-right"></i>Terms and
+                cindition</a
+            >
+            <a href="#"
+            ><i id="pad_white" class="fa-solid fa-caret-right"></i>Support</a
+            >
+        </div>
+
+        <div class="content_footer">
+            <h3>Newsletter</h3>
+            <br/>
+            <p>Dolor amet sit justo amet elitr clita ipsum elitr est.</p>
+            <br/>
+
+            <div class="input_search">
+                <input
+                        id="input_search_email"
+                        type="email"
+                        placeholder="Your Email"
+                /><span id="blue_btn">Sign Up</span>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- --------------------------modals --------------------------------->
+
+<!-- -- -- -- -- -- -- -- -- -- modal_menu  -- -- -- -- -- -- -- -- -- ---->
+
+<div class="container_menu_modal hide">
+    <div class="menu_left">
+        <div class="close_logo">
+            <i id="close_icon" class="bx bx-x"></i>
+            <p id="close_icon">Renovative Design</p>
+        </div>
+        <div class="menu_list_main">
+            <a href="{% url 'home:home' %}" id="menu_list_main">Home</a>
+            <a href="{% url 'products:products' %}" id="menu_list_main"> Product</a>
+            <a href="{% url 'accounts:login' %}" id="menu_list_main"> Register</a>
+            <a href="{% url 'cart:cart' %}" id="menu_list_main"> Order</a>
+        </div>
+
+        <div class="menu_list">
+            {% for c in category %}
+                {% if c.name == 'Storage & organisation' %}
+                    <a href="{% url 'products:c_products' c.id c.slug %}" id="menu_list">Storage &
+                        organisation</a>
+                {% endif %}
+            {% endfor %}
+
+            {% for c in category %}
+                {% if c.name == 'Furniture' %}
+                    <a href="{% url 'products:c_products' c.id c.slug %}" id="menu_list"> Furniture</a>
+                {% endif %}
+            {% endfor %}
+
+
+            {% for c in category %}
+                {% if c.name == 'Textiles' %}
+                    <a href="{% url 'products:c_products' c.id c.slug %}" id="menu_list"> Textiles</a>
+                {% endif %}
+            {% endfor %}
+
+            {% for c in category %}
+                {% if c.name == 'Accessories' %}
+                    <a href="{% url 'products:c_products' c.id c.slug %}" id="menu_list"> Accessories</a>
+                {% endif %}
+            {% endfor %}
+            {% for c in category %}
+                {% if c.name == 'Lighting' %}
+                    <a href="{% url 'products:c_products' c.id c.slug %}" id="menu_list"> Lighting</a>
+                {% endif %}
+            {% endfor %}
+            {% for c in category %}
+                {% if c.name == 'Kitchenware & tableware' %}
+                    <a href="{% url 'products:c_products' c.id c.slug %}" id="menu_list"> Kitchenware & tableware</a>
+                {% endif %}
+            {% endfor %}
+            {% for c in category %}
+                {% if c.name == 'Bathroom products' %}
+                    <a href="{% url 'products:c_products' c.id c.slug %}" id="menu_list"> Bathroom products</a>
+                {% endif %}
+            {% endfor %}
+            {% for c in category %}
+                {% if c.name == 'Outdoor products' %}
+                    <a href="{% url 'products:c_products' c.id c.slug %}" id="menu_list"> Outdoor products</a>
+                {% endif %}
+            {% endfor %}
+        </div>
+    </div>
+    <div class="bac_menu_right"></div>
+</div>
+<!-- -- -- -- -- -- -- -- -- -- End_modal_menu  -- -- -- -- -- -- -- -- -- ---->
+
+<!-- -- -- -- -- -- -- -- -- -- modal_menu_share  -- -- -- -- -- -- -- -- -- ---->
+
+<div class="btn_share_modal_coppyeid hide">
+    The link has been copied
+    <i id="close_icon_btn_share_modal_coppyeid" class="bx bx-x"></i>
+</div>
+
+<div class="container_menu_modal_sahare hide">
+    <div class="menu_right_modal_share">
+        <div class="close_icon_modal_share">
+            <i id="close_icon_modal_share" class="bx bx-x"></i>
+            <div class="modal_share_img_text">
+                <div class="text_content_modal_share">
+                    <h1>Option of Bags</h1>
+                </div>
+            </div>
+        </div>
+
+        <div class="menu_list_main_modal_share">
+            <a href="#" id="menu_list_main_modal_share"
+            ><i class="bx bx-cart-add"></i> Add by article number</a
+            >
+            <a href="#" id="menu_list_main_modal_share"
+            ><i class="bx bx-heart"></i> Save for later
+            </a>
+            <a href="#" id="menu_list_main_modal_share"
+            ><i class="bx bxs-share-alt"></i> Share</a
+            >
+            <a
+                    href="#"
+                    id="menu_list_main_modal_share"
+                    class="coppy_link_modal_share"
+            ><i class='bx bxs-trash-alt'></i>Empty bag
+            </a>
+        </div>
+    </div>
+    <div class="bac_menu_right_modal_share"></div>
+</div>
+<!-- -- -- -- -- -- -- -- -- -- End_modal_menu_share -- -- -- -- -- -- -- -- -- ---->
+
+
+<section id="modal_section_profile" class="modal_section_detail hide">
+    <div class="left_modal_section_profile"></div>
+    <div id="modal">
+        <div class="title_modal_close_user_log">
+
+            {% if request.user.is_authenticated %}
+                <h4>Hi :
+                    {% if request.user.f_name %}
+                        {{ request.user.f_name }}
+                    {% else %}
+                        {{ request.user.phone_number }}
+                    {% endif %}
+                </h4>
+                <a href={% url 'accounts:logout' %}><span id="btn_log_out"><i id="logo_profile" class="bx bx-user"></i>Log Out</span></a>
+            {% endif %}
+
+
+        </div>
+        <div class="title_modal_heart_cart">
+            <a href="{% url 'products:liked_user_products' %}"><i class="fa-regular fa-heart"></i></a>
+            <div class="cart_counter">
+                <a href="{% url 'cart:cart' %}"><i id="order_icon" class="fa-solid fa-cart-plus"></i></a>
+                <span id="counter_order_profile">{{ cart_len }}</span>
+            </div>
+        </div>
+        <hr>
+        <div class="title_modal_close">
+            <h4>Options</h4>
+
+            <a href="{% url 'products:liked_user_products' %}"> Liked list </a>
+            <a href="{% url 'accounts:profile' %}"> Manage account </a>
+
+        </div>
+    </div>
+</section>
+

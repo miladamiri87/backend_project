@@ -1,0 +1,74 @@
+{% extends '_base.html' %}
+{% load product_filter_tag %}
+{% load static %}
+
+{% load static %}
+{% load humanize %}
+
+
+{% block css %}
+    <link rel="stylesheet" href="{% static 'product/css/style_product_details.css' %}">
+{% endblock %}
+
+
+{% block title %}
+    Product Details Page
+{% endblock %}
+
+
+{% block messages %}
+    {% include 'incs/messages.html' %}
+{% endblock %}
+
+
+
+{% block content %}
+    {% include 'product/details-content.html' %}
+{% endblock %}
+
+
+{% block sctipts %}
+    <script src="{% static 'product/js/detail.js' %}"></script>
+
+    <script src={% static 'product/scripts/script_product_details.js' %}></script>
+    <script>
+    const ctx = document.getElementById('myChart');
+
+    new Chart(ctx, {
+        type: 'line',
+        data: {
+            {% if product.status == 'none' %}
+                labels: [
+                    {% for p in product.price_changes.all %}'{{ p.date|date:"M Y" }}',{% endfor %}
+                ],
+            {% else %}
+                labels: [
+                    {% for p in selected_var.v_price_changes.all %}'{{ p.date|date:"M Y" }}',{% endfor %}
+                ],
+            {% endif %}
+            datasets: [{
+                label: 'Price',
+                {% if product.status == 'none' %}
+                    data: [
+                        {% for p in product.price_changes.all %}'{{ p.unit_price }}',{% endfor %}
+                    ],
+                {% else %}
+                    data: [
+                        {% for p in selected_var.v_price_changes.all %}'{{ p.unit_price }}',{% endfor %}
+                    ],
+                {% endif %}
+                borderWidth: 1
+            }]
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+</script>
+
+
+{% endblock %}

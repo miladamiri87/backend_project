@@ -1,0 +1,28 @@
+{% extends '_base.html' %}
+{% load static %}
+{% load humanize %}
+
+{% block css %}
+    <link rel="stylesheet" href="{% static 'product/css/style_product_category.css' %}">
+{% endblock %}
+
+
+{% block title %}
+    Product Category Page
+{% endblock %}
+
+
+{% block messages %}
+    {% include 'incs/messages.html' %}
+{% endblock %}
+
+
+
+{% block content %}
+    {% include 'product/product_category_content.html' %}
+{% endblock %}
+
+
+{% block sctipts %}
+    <script src={% static 'product/scripts/script_product_category.js' %}></script>
+{% endblock %}

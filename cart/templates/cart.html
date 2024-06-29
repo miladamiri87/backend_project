@@ -1,0 +1,28 @@
+{% extends '_base.html' %}
+{% load static %}
+
+{% block css %}
+    <link rel="stylesheet" href="{% static 'cart/css/style_cart.css' %}">
+
+
+{% endblock %}
+
+
+{% block title %}
+    Cart Pages
+{% endblock %}
+{% block messages %}
+    {% include 'incs/messages.html' %}
+{% endblock %}
+
+
+
+{% block content %}
+    {% include 'cart_content.html' %}
+{% endblock %}
+
+
+{% block sctipts %}
+    <script src={% static 'cart/scripts/scripts_cart.js' %}></script>
+
+{% endblock %}

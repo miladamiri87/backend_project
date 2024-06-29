@@ -1,0 +1,97 @@
+{% if messages %}
+    {% for msg in messages %}
+        <div class="container_messages">
+            <p {% if msg.tags %} id="messages" class="alert alert-{{ msg.tags }}"{% endif %}>{{ msg }}
+                <i id="btn_close" class='bx messages bx-x'></i>
+            </p>
+
+        </div>
+
+    {% endfor %}
+{% endif %}
+
+
+<style>
+    .hide {
+        opacity: 0;
+        visibility: collapse;
+
+    }
+
+
+
+    .container_messages p {
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .container_messages p i {
+        cursor: pointer;
+        font-size: 1.5rem;
+    }
+
+.hide_modal_copy {
+  display: flex;
+  position: fixed;
+  top: 0;
+  right: 0;
+  opacity: 1;
+  z-index: 20;
+  animation: hide_modal_animation ease forwards 1s;
+}
+
+@keyframes hide_modal_animation {
+  0% {
+    transform: translateX(20%);
+  }
+  40% {
+    transform: translateX(-20%);
+  }
+  80% {
+    transform: translateX(20%);
+  }
+  100% {
+    transform: translateX(120%);
+  }
+}
+.show_modal_copy {
+  display: flex;
+  position: fixed;
+  top: 0;
+  right: 0;
+  opacity: 1;
+  transition: 0.2s all ease;
+  z-index: 20;
+  animation: show_modal_animation ease forwards 1s;
+}
+
+@keyframes show_modal_animation {
+  0% {
+    transform: translateX(100%);
+  }
+  40% {
+    transform: translateX(-20%);
+  }
+  80% {
+    transform: translateX(0%);
+  }
+  100% {
+    transform: translateX(-5%);
+  }
+}
+
+</style>
+
+<script>
+    let btn_close = document.querySelectorAll('.messages')
+    let container_messages = document.querySelectorAll('.container_messages')
+
+    for(let i=0; i<btn_close.length;i++){
+         btn_close[i].addEventListener('click', () => {
+        container_messages[i].classList.add('hide')
+    })
+    }
+
+
+
+</script>

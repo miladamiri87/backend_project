@@ -1,0 +1,28 @@
+{% extends '_base.html' %}
+{% load static %}
+{% load humanize %}
+
+{% block css %}
+    <link rel="stylesheet" href="{% static 'product/css/style_product_liked_user.css' %}">
+{% endblock %}
+
+
+{% block title %}
+    Product Liked User Page
+{% endblock %}
+
+
+{% block messages %}
+    {% include 'incs/messages.html' %}
+{% endblock %}
+
+
+
+{% block content %}
+    {% include 'product/product_LikedUser_content.html' %}
+{% endblock %}
+
+
+{% block sctipts %}
+    <script src={% static 'product/scripts/script_product_category.js' %}></script>
+{% endblock %}

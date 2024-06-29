@@ -1,0 +1,42 @@
+{% extends '_base.html' %}
+{% load static %}
+
+{% block css %}
+    {#    <link rel="stylesheet" href="{% static 'home/css/home.css' %}">#}
+    {#    <link rel="stylesheet" href="{% static 'home/css/_base.css' %}">#}
+    <link rel="stylesheet" href="{% static 'home/css/accounts/verify-register.css' %}">
+
+
+{% endblock %}
+
+
+{% block title %}
+    Verify Register Page
+{% endblock %}
+
+{% block messages %}
+    {% include 'incs/messages_without_navbar.html' %}
+{% endblock %}
+
+
+
+{% block content %}
+    <div class="container_forms">
+        <div class="container_forms_left">
+            <h1>Renovative Design</h1>
+        </div>
+        <div class="container_forms_right">
+
+            <h2>Enter Your Verification Code:<br/></h2>
+            <form action="" method="post" novalidate class="col-md-4">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <input class="btn" id="blue-btn" type="submit" value="Verify">
+            </form>
+            <hr>
+
+        </div>
+    </div>
+
+
+{% endblock %}

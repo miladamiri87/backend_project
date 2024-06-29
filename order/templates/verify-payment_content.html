@@ -1,0 +1,41 @@
+{% extends '_base.html' %}
+{% load static %}
+
+{% block css %}
+    <link rel="stylesheet" href="{% static 'home/css/accounts/verify-register.css' %}">
+{% endblock %}
+
+{% block title %}
+    Verify Payment Page
+{% endblock %}
+
+
+{% block messages %}
+    {% include 'incs/messages_without_navbar.html' %}
+{% endblock %}
+
+
+
+{% block content %}
+    <div class="container_forms">
+        <div class="container_forms_left">
+            <h1>Renovative Design</h1>
+        </div>
+        <div class="container_forms_right">
+
+            <h2>Enter Your Verification Code:<br/></h2>
+            {% if order.paid %}
+                <p class="alert alert-success">تراکنش موفق</p>
+                <p>{{ order.tracking_number }}</p>
+            {% else %}
+                <p class="alert alert-danger">تراکنش ناموفق</p>
+                <p>{{ order.tracking_number }}</p>
+            {% endif %}
+            <hr>
+
+
+        </div>
+    </div>
+
+
+{% endblock %}

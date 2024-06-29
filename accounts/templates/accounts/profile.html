@@ -1,0 +1,28 @@
+{% extends '_base.html' %}
+{% load static %}
+{% load humanize %}
+
+{% block css %}
+    <link rel="stylesheet" href="{% static 'home/css/accounts/style_profile.css' %}">
+{% endblock %}
+
+
+{% block title %}
+    Profile Page
+{% endblock %}
+
+
+{% block messages %}
+    {% include 'incs/messages.html' %}
+{% endblock %}
+
+
+
+{% block content %}
+    {% include 'accounts/profile_content.html' %}
+{% endblock %}
+
+
+{% block sctipts %}
+    <script src={% static 'home/scripts/accounts/scripts_profile.js' %}></script>
+{% endblock %}

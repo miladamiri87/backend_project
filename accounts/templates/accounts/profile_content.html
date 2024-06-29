@@ -1,0 +1,192 @@
+{% load static %}
+
+<!-- -- -- -- -- -- -- -- -- -- header  -- -- -- -- -- -- -- -- -- -- -->
+
+<section class="container_nav_ber">
+    <div class="menu">
+        <i id="menu_icon" class="bx bx-menu"></i>
+        <p>Menu</p>
+    </div>
+    <div id="logo_search">
+        <img alt="Renovative Design"
+             id="logo_" title="Renovative Design"
+             src={% static "product/media/header/logo1.png" %}
+        />
+        <i id="search_icon" class="fa-solid fa-magnifying-glass"></i>
+        <input
+                id="search"
+                type="search"
+                placeholder="What are you looking for?"
+        />
+    </div>
+    <div id="like_cart_heart">
+        <div class="logIn">
+
+            {% if request.user.is_authenticated %}
+                <span id="logo_profile_span"><i id="logo_profile" class="bx bx-user"></i>Hi:
+                    {% if request.user.f_name %}
+                        {{ request.user.f_name }}
+                    {% else %}
+                        {{ request.user.phone_number }}
+                    {% endif %}
+                    </span>
+
+            {% endif %}
+        </div>
+
+        <a href=""><i class="fa-regular fa-heart"></i></a>
+        <a href=""><i class="fa-solid fa-cart-plus"></i></a>
+    </div>
+</section>
+<!-- -- -- -- -- -- -- -- -- -- End_header  -- -- -- -- -- -- -- -- -- -- -->
+
+<section id="container_manage_pro">
+    <div id="left_container_profile">
+        <h5 id="setting_btn" class="active_btn"><i class='bx bx-cog bx-rotate-270'></i>Account settings</h5>
+        <a id="btn_logiiing" href="{% url 'accounts:logout' %} "><h5 id="logout_btn"><i
+                class='bx bx-log-out bx-flip-horizontal'></i>Logout</h5></a>
+    </div>
+    <div id="right_container_profile">
+        <h3> Account setting</h3>
+        <div id="detail_profile">
+            <p id="detail_profile_personal_detail" class="title_detail_profile active_border_manage">Profile details</p>
+            <p id="detail_profile_billimg" class="title_detail_profile">Billing & shipping</p>
+            <p id="detail_profile_password" class="title_detail_profile">Login & security</p>
+        </div>
+        {#        <div id="modal_profile_detail_container">#}
+
+        {#   ///////////////////////////////////////////////////////////////////////personal Info#}
+        <div class="active_option" id="personal_information_manage">
+            <div id="personal_information_name">
+                <h4 id="edit_pers_info">Personal information
+                    <a href="{% url 'accounts:profile_update' %}">
+                        <div id="btn_edit_manage">
+                            <i class='bx bx-edit-alt'></i>
+                            <p>Edit</p>
+                        </div>
+                    </a>
+                </h4>
+                <div id="margin_button">
+                    <p id="title_detail_">Name:</p>
+                    <p>{{ request.user.full_name }}</p>
+                </div>
+
+
+                <p id="title_detail_">Date of Birth:</p>
+                <p>{{ request.user.date_birthday }}</p>
+            </div>
+            <div id="personal_information_email">
+                <h4 id="edit_pers_info">Email
+                    <a href="{% url 'accounts:profile_update_email' %}">
+                        <div id="btn_edit_manage">
+                            <i class='bx bx-edit-alt'></i>
+                            <p>Edit</p>
+                        </div>
+                    </a>
+                </h4>
+
+                <div id="margin_button">
+                    <p id="title_detail_">Email address:</p>
+                    <p>{{ request.user.email }}</p>
+                </div>
+
+
+            </div>
+            <div id="personal_information_mobile">
+                <h4 id="edit_pers_info">Mobile
+                    <a href="{% url 'accounts:profile_update_mobile' %}">
+                        <div id="btn_edit_manage">
+                            <i class='bx bx-edit-alt'></i>
+                            <p>Edit</p>
+                        </div>
+                    </a>
+                </h4>
+
+                <div id="margin_button">
+                    <p id="title_detail_">Mobile Number</p>
+                    <p>{{ request.user.phone_number }}</p>
+                </div>
+            </div>
+        </div>
+        {#   ///////////////////////////////////////////////////////////////////////billing_address#}
+
+        <div class="hide_option" id="billing_address_manage">
+            <h4 id="edit_pers_info">Billing address
+                <a href="{% url 'accounts:profile_update_address' %}">
+                    <div id="btn_edit_manage">
+                        <i class='bx bx-edit-alt'></i>
+                        <p>Edit</p>
+                    </div>
+                </a>
+            </h4>
+            <div id="margin_button">
+                <p id="title_detail_">Address</p>
+                <p id="title_detail_">City/Town: <span>{{ request.user.address_city }}</span></p>
+                <p id="title_detail_">Street: <span>{{ request.user.address_street }}</span></p>
+
+            </div>
+        </div>
+        {#   ///////////////////////////////////////////////////////////////////////pass#}
+
+        <div class="hide_option" id="security_manage">
+
+            <h4 id="edit_pers_info">Passwords
+                <a href="{% url 'accounts:password_change' %}">
+                    <div id="btn_edit_manage">
+                        <i class='bx bx-edit-alt'></i>
+                        <p>Edit</p>
+                    </div>
+                </a>
+            </h4>
+            <div id="margin_button">
+                <p id="title_detail_">Change Passwords</p>
+                <p id="title_detail_">(**********)</p>
+            </div>
+        </div>
+
+        {#        </div>#}
+    </div>
+
+</section>
+
+
+{##}
+{#    <a href="{% url 'accounts:profile_update' %}" class="btn btn-primary">Update</a>#}
+{#    <a href="{% url 'accounts:password_change' %}" class="btn btn-secondary">Change password</a>#}
+{##}
+{#{% endblock %}#}
+
+
+<!-- -- -- -- -- -- -- -- -- -- modal_menu  -- -- -- -- -- -- -- -- -- ---->
+
+<div class="container_menu_modal hide">
+    <div class="menu_left">
+        <div class="close_logo">
+            <i id="close_icon" class="bx bx-x"></i>
+            <p id="close_icon">Renovative Design</p>
+        </div>
+        <div class="menu_list_main">
+            <a href="{% url 'home:home' %}" id="menu_list_main">Home</a>
+            <a href="{% url 'products:products' %}" id="menu_list_main"> Product</a>
+{#                        {% if not request.user.is_authenticated %}#}
+{#                            <a href={% url 'accounts:login' %}>#}
+{#                            <i id="logo_profile" class="bx bx-user"></i>#}
+{#                            <a href="{% url 'accounts:login' %}" id="menu_list_main"> Register</a>#}
+{#                        {% endif %}#}
+            <a href="#" id="menu_list_main"> Order</a>
+        </div>
+
+        <div class="menu_list">
+            <a href="{% url 'accounts:profile_to_category' %}" id="menu_list">Storage & organisation</a>
+            <a href="{% url 'accounts:profile_to_category' %}" id="menu_list"> Furniture</a>
+            <a href="{% url 'accounts:profile_to_category' %}" id="menu_list"> Textiles</a>
+            <a href="{% url 'accounts:profile_to_category' %}" id="menu_list"> Accessories</a>
+            <a href="{% url 'accounts:profile_to_category' %}" id="menu_list"> Lighting</a>
+            <a href="{% url 'accounts:profile_to_category' %}" id="menu_list"> Kitchenware & tableware</a>
+            <a href="{% url 'accounts:profile_to_category' %}" id="menu_list"> Bathroom products</a>
+            <a href="{% url 'accounts:profile_to_category' %}" id="menu_list"> Outdoor products</a>
+        </div>
+    </div>
+    <div class="bac_menu_right"></div>
+</div>
+<!-- -- -- -- -- -- -- -- -- -- End_modal_menu  -- -- -- -- -- -- -- -- -- ---->

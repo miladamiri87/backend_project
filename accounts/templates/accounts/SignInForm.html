@@ -1,0 +1,47 @@
+{% extends '_base.html' %}
+{% load static %}
+
+{% block css %}
+    {#    <link rel="stylesheet" href="{% static 'home/css/home.css' %}">#}
+    {#    <link rel="stylesheet" href="{% static 'home/css/_base.css' %}">#}
+    <link rel="stylesheet" href="{% static 'home/css/accounts/SignInForm.css' %}">
+{% endblock %}
+
+
+{% block title %}
+    Login Page
+{% endblock %}
+
+{% block messages %}
+    {% include 'incs/messages_without_navbar.html' %}
+{% endblock %}
+
+{% block content %}
+
+    <div class="container_forms">
+        <div class="container_forms_left">
+            <h1>Renovative Design</h1>
+        </div>
+        <div class="container_forms_right">
+            <div class="container_logo">
+                <img alt="logo" src={% static 'home/media/header/logo1.png' %}>
+                <h1><a href={% url 'home:home' %}>Renovative Design</a></h1>
+
+            </div>
+            <h2>Sign in to your account<br/></h2>
+            <form action="" method="post" novalidate class="col-md-4">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <input class="btn" id="blue-btn" type="submit" value="Login">
+            </form>
+            <hr>
+            <div class="create_new_account"><h5>Don't have an account? </h5>
+                <a href="{% url 'accounts:register' %}">Sign up</a>
+            </div>
+            <div class="create_new_account"><h5>forget your password?</h5>
+                <a href="{% url 'accounts:password_reset' %}">Resset password</a>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

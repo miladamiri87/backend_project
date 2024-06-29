@@ -1,0 +1,52 @@
+{% if messages %}
+    {% for msg in messages %}
+        <div class="container_messages">
+            <p {% if msg.tags %} id="messages" class="alert alert-{{ msg.tags }}"{% endif %}>{{ msg }}
+                <i id="btn_close" class='bx messages bx-x'></i>
+            </p>
+
+        </div>
+
+    {% endfor %}
+{% endif %}
+
+
+<style>
+    .hide {
+        opacity: 0;
+        visibility: collapse;
+
+    }
+
+    .container_messages {
+        z-index: 2;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+    }
+
+    .container_messages p {
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .container_messages p i {
+        cursor: pointer;
+        font-size: 1.5rem;
+    }
+
+</style>
+
+<script>
+    let btn_close = document.querySelectorAll('.messages')
+    let container_messages = document.querySelectorAll('.container_messages')
+
+    for(let i=0; i<btn_close.length;i++){
+         btn_close[i].addEventListener('click', () => {
+        container_messages[i].classList.add('hide')
+    })
+    }
+
+
+</script>

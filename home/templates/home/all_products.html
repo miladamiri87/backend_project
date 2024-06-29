@@ -1,0 +1,28 @@
+{% extends '_base.html' %}
+{% load static %}
+
+{% block css %}
+    <link rel="stylesheet" href="{% static 'home/css/style_all_product.css' %}">
+
+
+{% endblock %}
+
+
+{% block title %}
+    All Product Pages
+{% endblock %}
+{% block messages %}
+    {% include 'incs/messages.html' %}
+{% endblock %}
+
+
+
+{% block content %}
+    {% include 'home/all_products_content.html' %}
+{% endblock %}
+
+
+{% block sctipts %}
+    <script src={% static 'home/scripts/all_products.js' %}></script>
+
+{% endblock %}
